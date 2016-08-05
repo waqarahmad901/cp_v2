@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="car_parkingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ap_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="first_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="last_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cnic" Type="nvarchar" MaxLength="50" />
+    <Property Name="contact_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="phone_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="address" Type="nvarchar" MaxLength="50" />
+    <Property Name="is_block" Type="bit" />
+    <Property Name="terminal" Type="nvarchar" MaxLength="50" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" />
+    <Property Name="role" Type="nvarchar" MaxLength="50" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="dur_amount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="veh_type_id" Type="uniqueidentifier" />
+    <Property Name="duration_time" Type="nvarchar" MaxLength="50" />
+    <Property Name="amount_to_charge" Type="float" />
+    <Property Name="is_challaned" Type="bit" />
+  </EntityType>
+  <EntityType Name="duration">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="duration_value" Type="int" />
+    <Property Name="is_hourly" Type="bit" />
+  </EntityType>
+  <EntityType Name="duration_charges">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="duration_id" Type="uniqueidentifier" />
+    <Property Name="amount" Type="float" />
+    <Property Name="description" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="monthly_reg">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="vehicle_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="date_registered" Type="datetime" />
+    <Property Name="amount" Type="float" />
+    <Property Name="month_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cnic" Type="nvarchar" MaxLength="50" />
+    <Property Name="contact_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="ownername" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="parked_car">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="car_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="veh_type" Type="uniqueidentifier" />
+    <Property Name="assigned_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="parkin_time" Type="datetime" />
+    <Property Name="parkout_time" Type="datetime" />
+    <Property Name="created_by" Type="uniqueidentifier" />
+    <Property Name="charged_amount" Type="float" />
+    <Property Name="paid_amount" Type="float" />
+    <Property Name="parked_duration" Type="nvarchar" MaxLength="50" />
+    <Property Name="recript_no" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="date_created" Type="datetime" />
+    <Property Name="is_challaned" Type="bit" />
+    <Property Name="is_monthly" Type="bit" />
+    <Property Name="out_by" Type="uniqueidentifier" />
+    <Property Name="is_nightly" Type="bit" />
+    <Property Name="is_updateby_admin" Type="bit" />
+  </EntityType>
+  <EntityType Name="parkedcar_viewlog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="parked_car_id" Type="uniqueidentifier" />
+    <Property Name="date_viewed" Type="datetime" />
+    <Property Name="viewed_by" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="system_configs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="value" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="user_daycount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="act_date" Type="datetime" />
+    <Property Name="user_id" Type="uniqueidentifier" />
+    <Property Name="total_cars" Type="int" />
+  </EntityType>
+  <EntityType Name="veh_type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="description" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="View_1">
+    <Key>
+      <PropertyRef Name="recript_no" />
+    </Key>
+    <Property Name="car_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="veh_type" Type="uniqueidentifier" />
+    <Property Name="parkin_time" Type="datetime" />
+    <Property Name="parkout_time" Type="datetime" />
+    <Property Name="created_by" Type="uniqueidentifier" />
+    <Property Name="charged_amount" Type="float" />
+    <Property Name="paid_amount" Type="float" />
+    <Property Name="parked_duration" Type="nvarchar" MaxLength="50" />
+    <Property Name="recript_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="date_created" Type="datetime" />
+    <Property Name="is_challaned" Type="bit" />
+    <Property Name="is_monthly" Type="bit" />
+    <Property Name="out_by" Type="uniqueidentifier" />
+    <Property Name="assigned_no" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_dur_amount_veh_type">
+    <End Role="veh_type" Type="Self.veh_type" Multiplicity="0..1" />
+    <End Role="dur_amount" Type="Self.dur_amount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="veh_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dur_amount">
+        <PropertyRef Name="veh_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_duration_charges_duration">
+    <End Role="duration" Type="Self.duration" Multiplicity="0..1" />
+    <End Role="duration_charges" Type="Self.duration_charges" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="duration">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="duration_charges">
+        <PropertyRef Name="duration_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_parked_car_ap_user">
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="0..1" />
+    <End Role="parked_car" Type="Self.parked_car" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="parked_car">
+        <PropertyRef Name="created_by" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_parked_car_veh_type">
+    <End Role="veh_type" Type="Self.veh_type" Multiplicity="0..1" />
+    <End Role="parked_car" Type="Self.parked_car" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="veh_type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="parked_car">
+        <PropertyRef Name="veh_type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_parkedcar_viewlog_ap_user">
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="0..1" />
+    <End Role="parkedcar_viewlog" Type="Self.parkedcar_viewlog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="parkedcar_viewlog">
+        <PropertyRef Name="viewed_by" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_parkedcar_viewlog_parked_car">
+    <End Role="parked_car" Type="Self.parked_car" Multiplicity="0..1" />
+    <End Role="parkedcar_viewlog" Type="Self.parkedcar_viewlog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="parked_car">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="parkedcar_viewlog">
+        <PropertyRef Name="parked_car_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_daycount_ap_user">
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="0..1" />
+    <End Role="user_daycount" Type="Self.user_daycount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_daycount">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="car_parkingModelStoreContainer">
+    <EntitySet Name="ap_user" EntityType="Self.ap_user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dur_amount" EntityType="Self.dur_amount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="duration" EntityType="Self.duration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="duration_charges" EntityType="Self.duration_charges" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="monthly_reg" EntityType="Self.monthly_reg" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="parked_car" EntityType="Self.parked_car" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="parkedcar_viewlog" EntityType="Self.parkedcar_viewlog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="system_configs" EntityType="Self.system_configs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_daycount" EntityType="Self.user_daycount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="veh_type" EntityType="Self.veh_type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="View_1" EntityType="Self.View_1" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [View_1].[car_no] AS [car_no], 
+    [View_1].[veh_type] AS [veh_type], 
+    [View_1].[parkin_time] AS [parkin_time], 
+    [View_1].[parkout_time] AS [parkout_time], 
+    [View_1].[created_by] AS [created_by], 
+    [View_1].[charged_amount] AS [charged_amount], 
+    [View_1].[paid_amount] AS [paid_amount], 
+    [View_1].[parked_duration] AS [parked_duration], 
+    [View_1].[recript_no] AS [recript_no], 
+    [View_1].[date_created] AS [date_created], 
+    [View_1].[is_challaned] AS [is_challaned], 
+    [View_1].[is_monthly] AS [is_monthly], 
+    [View_1].[out_by] AS [out_by], 
+    [View_1].[assigned_no] AS [assigned_no]
+    FROM [dbo].[View_1] AS [View_1]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_dur_amount_veh_type" Association="Self.FK_dur_amount_veh_type">
+      <End Role="veh_type" EntitySet="veh_type" />
+      <End Role="dur_amount" EntitySet="dur_amount" />
+    </AssociationSet>
+    <AssociationSet Name="FK_duration_charges_duration" Association="Self.FK_duration_charges_duration">
+      <End Role="duration" EntitySet="duration" />
+      <End Role="duration_charges" EntitySet="duration_charges" />
+    </AssociationSet>
+    <AssociationSet Name="FK_parked_car_ap_user" Association="Self.FK_parked_car_ap_user">
+      <End Role="ap_user" EntitySet="ap_user" />
+      <End Role="parked_car" EntitySet="parked_car" />
+    </AssociationSet>
+    <AssociationSet Name="FK_parked_car_veh_type" Association="Self.FK_parked_car_veh_type">
+      <End Role="veh_type" EntitySet="veh_type" />
+      <End Role="parked_car" EntitySet="parked_car" />
+    </AssociationSet>
+    <AssociationSet Name="FK_parkedcar_viewlog_ap_user" Association="Self.FK_parkedcar_viewlog_ap_user">
+      <End Role="ap_user" EntitySet="ap_user" />
+      <End Role="parkedcar_viewlog" EntitySet="parkedcar_viewlog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_parkedcar_viewlog_parked_car" Association="Self.FK_parkedcar_viewlog_parked_car">
+      <End Role="parked_car" EntitySet="parked_car" />
+      <End Role="parkedcar_viewlog" EntitySet="parkedcar_viewlog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_daycount_ap_user" Association="Self.FK_user_daycount_ap_user">
+      <End Role="ap_user" EntitySet="ap_user" />
+      <End Role="user_daycount" EntitySet="user_daycount" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

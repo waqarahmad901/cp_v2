@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="car_parkingModelStoreContainer" CdmEntityContainer="car_parkingEntities">
+    <EntitySetMapping Name="ap_user">
+      <EntityTypeMapping TypeName="car_parkingModel.ap_user">
+        <MappingFragment StoreEntitySet="ap_user">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="last_name" ColumnName="last_name" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="phone_no" ColumnName="phone_no" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="is_block" ColumnName="is_block" />
+          <ScalarProperty Name="terminal" ColumnName="terminal" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="username" ColumnName="username" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="dur_amount">
+      <EntityTypeMapping TypeName="car_parkingModel.dur_amount">
+        <MappingFragment StoreEntitySet="dur_amount">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="veh_type_id" ColumnName="veh_type_id" />
+          <ScalarProperty Name="duration_time" ColumnName="duration_time" />
+          <ScalarProperty Name="amount_to_charge" ColumnName="amount_to_charge" />
+          <ScalarProperty Name="is_challaned" ColumnName="is_challaned" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="durations">
+      <EntityTypeMapping TypeName="car_parkingModel.duration">
+        <MappingFragment StoreEntitySet="duration">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="duration_value" ColumnName="duration_value" />
+          <ScalarProperty Name="is_hourly" ColumnName="is_hourly" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="duration_charges">
+      <EntityTypeMapping TypeName="car_parkingModel.duration_charges">
+        <MappingFragment StoreEntitySet="duration_charges">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="duration_id" ColumnName="duration_id" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="monthly_reg">
+      <EntityTypeMapping TypeName="car_parkingModel.monthly_reg">
+        <MappingFragment StoreEntitySet="monthly_reg">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="vehicle_no" ColumnName="vehicle_no" />
+          <ScalarProperty Name="date_registered" ColumnName="date_registered" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="month_name" ColumnName="month_name" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="ownername" ColumnName="ownername" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="parked_car">
+      <EntityTypeMapping TypeName="car_parkingModel.parked_car">
+        <MappingFragment StoreEntitySet="parked_car">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="car_no" ColumnName="car_no" />
+          <ScalarProperty Name="veh_type" ColumnName="veh_type" />
+          <ScalarProperty Name="assigned_no" ColumnName="assigned_no" />
+          <ScalarProperty Name="parkin_time" ColumnName="parkin_time" />
+          <ScalarProperty Name="parkout_time" ColumnName="parkout_time" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="charged_amount" ColumnName="charged_amount" />
+          <ScalarProperty Name="paid_amount" ColumnName="paid_amount" />
+          <ScalarProperty Name="parked_duration" ColumnName="parked_duration" />
+          <ScalarProperty Name="recript_no" ColumnName="recript_no" />
+          <ScalarProperty Name="date_created" ColumnName="date_created" />
+          <ScalarProperty Name="is_challaned" ColumnName="is_challaned" />
+          <ScalarProperty Name="is_monthly" ColumnName="is_monthly" />
+          <ScalarProperty Name="out_by" ColumnName="out_by" />
+          <ScalarProperty Name="is_nightly" ColumnName="is_nightly" />
+          <ScalarProperty Name="is_updateby_admin" ColumnName="is_updateby_admin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="parkedcar_viewlog">
+      <EntityTypeMapping TypeName="car_parkingModel.parkedcar_viewlog">
+        <MappingFragment StoreEntitySet="parkedcar_viewlog">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="parked_car_id" ColumnName="parked_car_id" />
+          <ScalarProperty Name="date_viewed" ColumnName="date_viewed" />
+          <ScalarProperty Name="viewed_by" ColumnName="viewed_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="car_parkingModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="system_configs">
+      <EntityTypeMapping TypeName="car_parkingModel.system_configs">
+        <MappingFragment StoreEntitySet="system_configs">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_daycount">
+      <EntityTypeMapping TypeName="car_parkingModel.user_daycount">
+        <MappingFragment StoreEntitySet="user_daycount">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="act_date" ColumnName="act_date" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="total_cars" ColumnName="total_cars" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="veh_type">
+      <EntityTypeMapping TypeName="car_parkingModel.veh_type">
+        <MappingFragment StoreEntitySet="veh_type">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_1">
+      <EntityTypeMapping TypeName="car_parkingModel.View_1">
+        <MappingFragment StoreEntitySet="View_1">
+          <ScalarProperty Name="car_no" ColumnName="car_no" />
+          <ScalarProperty Name="veh_type" ColumnName="veh_type" />
+          <ScalarProperty Name="parkin_time" ColumnName="parkin_time" />
+          <ScalarProperty Name="parkout_time" ColumnName="parkout_time" />
+          <ScalarProperty Name="created_by" ColumnName="created_by" />
+          <ScalarProperty Name="charged_amount" ColumnName="charged_amount" />
+          <ScalarProperty Name="paid_amount" ColumnName="paid_amount" />
+          <ScalarProperty Name="parked_duration" ColumnName="parked_duration" />
+          <ScalarProperty Name="recript_no" ColumnName="recript_no" />
+          <ScalarProperty Name="date_created" ColumnName="date_created" />
+          <ScalarProperty Name="is_challaned" ColumnName="is_challaned" />
+          <ScalarProperty Name="is_monthly" ColumnName="is_monthly" />
+          <ScalarProperty Name="out_by" ColumnName="out_by" />
+          <ScalarProperty Name="assigned_no" ColumnName="assigned_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="car_parkingModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="car_parkingModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="car_parkingModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="car_parkingModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="car_parkingModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="car_parkingModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="car_parkingModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="car_parkingModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="car_parkingModel.Store.sp_upgraddiagrams" />
+  </EntityContainerMapping>
+</Mapping>
