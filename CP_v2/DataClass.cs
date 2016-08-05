@@ -8,9 +8,9 @@ namespace CP_v2
 {
     public class DataClass
     {   
-        car_parkingEntities _context = new car_parkingEntities();
+        car_parkingEntities _context = new car_parkingEntities();  
         public ap_user VerifyUserLogin(string userName, string password)
-        {
+        {  
             return _context.ap_user.Where(x => x.username == userName && x.password == password).FirstOrDefault();
 
         }    
