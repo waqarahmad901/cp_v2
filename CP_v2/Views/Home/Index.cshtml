@@ -1,7 +1,6 @@
 ﻿@model CP_v2.Models.HomeModel
-@{ Layout = null; 
+@{ Layout = null;
 }
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -42,80 +41,96 @@
     </script>
 
 
-
 </head>
 <body>
-    <div class="head-login text-left">
-        <div class="head-login-title">Raja Zahid Latif Contractor</div>
-        <div class="slogan">slogan comes here. slogan comes here.</div>
-    </div>
-    <div class="user">
-        <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
-        <div class="user-details">
-            <b>User Name</b><br />
-            Login Time: 02:50pm
+    <div class="container">
+        <div class="head-login text-left">
+            <div class="head-login-title">Raja Zahid Latif Contractor</div>
+            <div class="slogan">slogan comes here. slogan comes here.</div>
+        </div>
+        <div class="user">
+            <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
+            <div class="user-details">
+                <b>User Name</b><br />
+                Login Time: 02:50pm
+            </div>
         </div>
     </div>
     <div class="clear"></div>
     <div class="white-sprtr"></div>
-    <div class="price-list">
-        <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
-        <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
-        <div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
-        <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>
-        <div class="price-circle">@Model.Yearly <sup>PKR</sup><span>Yearly Rate</span></div>
-    </div>
-    <div class="clear"></div>
-    <div class="data-entry">
-        <form class="form" id="form1" method="post">
-            <div class="carimg-side"><img src="@Url.Content(@ViewBag.pic)" alt="" onclick="ShowPopUp();"/></div>
+    <div class="container">
+        <div class="price-list">
+            <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
+            <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
+            <div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
+            <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>
+            <div class="price-circle">@Model.Yearly <sup>PKR</sup><span>Yearly Rate</span></div>
+        </div>
+        <div class="clear"></div>
+        <div class="data-entry">
+            <div class="carimg-side">
+                <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" onclick="ShowPopUp();" /></div>
+          
+            </div>
             <div class="form-side">
                 <div class="login-form">
                     <div id="form-main">
+                        <form method="post" class="form">
+                            <p class="type">
+                                <select name="veh_type">
+                                    <option value="89793349-9168-4246-96C8-7E35E99CBCEE">Car</option>
+                                    <option value="1451355E-95B2-4AF8-B370-DC7131F40678">Bike</option>
+                                </select>
+                            </p>
 
-                        <p class="name">
-                            <select name="veh_type">
-                                <option value="89793349-9168-4246-96C8-7E35E99CBCEE">Car</option>
-                                <option value="1451355E-95B2-4AF8-B370-DC7131F40678">Bike</option>
-                            </select>
-                        </p>
+                            <p class="name">
+                                <input name="name" type="text" placeholder="Enter Vehicle No" />
+                            </p>
 
-                        <p class="name">
-                            <input name="name" type="text" placeholder="Enter Vehicle No" />
-                        </p>
+                            <p class="name">
+                                <input name="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled=disabled />
+                            </p>
 
-                        <p class="name">
-                            <input name="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled />
-                        </p>
+                            <p class="name">
+                                <input name="clocktime" id="clocktime" type="text" placeholder="Checkin Time" value="@DateTime.Now.ToShortTimeString()" disabled=disabled />
+                            </p>
 
-                        <p class="name">
-                            <input name="clocktime" id="clocktime" type="text" placeholder="Checkin Time" value="@DateTime.Now.ToShortTimeString()" disabled />
-                        </p>
 
+                            <p class="price-for">
+                                <input type="checkbox" /> Night Parking
+                            </p>
+                            <div class="token">
+                                <div class="current-token"><span>Current Token No:</span> 405</div>
+
+                                <div class="submit">
+                                    <input type="submit" value="PRINT TOKEN" id="submit-button" />
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="clear"></div>
-            <div class="token">
-                <div class="current-token">405 <span>Current Token No Issued</span></div>
-
-                <div class="submit">
-                    <input type="submit" value="PRINT TOKEN NO" id="submit-button" />
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="clear"></div>
-    <table>
-        <tr>
-            <th>Token</th>
-            <th>Vehicle No</th>
-            <th>Checkin Time</th>
-            <th>Checkout Time</th>
-            <th>Checkin Date</th>
-            <th>Recived</th>
-        </tr>
-        @foreach (var item in Model.parkedCars)
+        </div>
+        <div class="clear"></div>
+        <table>
+            <tr>
+                <td colspan="6" class="filter">
+                    <b>Filter By</b>
+                    <input type="text" placeholder="Enter Token No" />
+                    <input type="text" placeholder="Enter Vehicle No" />
+                    <input type="submit" value="Search" />
+                    <input type="submit" value="Clear" />
+                </td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <th>Vehicle No</th>
+                <th>Checkin Time</th>
+                <th>Checkout Time</th>
+                <th>Checkin Date</th>
+                <th>Recived</th>
+            </tr>
+              @foreach (var item in Model.parkedCars)
         {
             <tr>
                 <td>@item.recript_no</td>
@@ -126,8 +141,25 @@
                 <td><img src="~/images/check-mark.png" alt="" /></td>
             </tr>
         }
-
-
-    </table>
+            <tr>
+                <td colspan="6">
+                    <div class="pagination">
+                        <ul>
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a class="active" href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">6</a></li>
+                            <li><a href="#">7</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="copyright">&copy; 2016. All Rights Reserved.</div>
+    </div>
 </body>
 </html>

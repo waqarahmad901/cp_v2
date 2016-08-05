@@ -66,7 +66,7 @@ namespace CP_v2.Controllers
             model.Night = durationAmount.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
             model.week = model.day.Value * 7;
             model.Month = durationAmount.Where(x => x.duration_time.Equals("Month")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.Yearly = model.day * 12;
+            model.Yearly = model.day.Value * 12;
 
             model.parkedCars = da.GetParkedCars();
             return View(model);
