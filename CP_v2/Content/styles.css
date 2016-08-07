@@ -184,6 +184,7 @@ tr:nth-child(even) {
 }
 .filter {}
 .filter input[type="text"]{padding:5px; margin-left:10px;}
+.filter input[type="number"]{padding:5px; margin-left:10px;}
 .filter select{padding:5px; margin-left:10px;}
 .data-entry input[type="text"]{padding: 9px 13px 9px 13px !important;} 
 /* Icons ---------------------------------- */

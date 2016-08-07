@@ -39,10 +39,13 @@
                 </div>
             </div>
             <div class="clear"></div>
-            <div class="alert success">
-                <span class="closebtn">&times;</span>
-                <strong>Success!</strong> You Login Successfully.
+            @if (ViewBag.IsLogin == false)
+            {
+            <div class="alert error">
+              
+                <strong>ERROR!</strong> You Login and Password is incorrect.
             </div>
+            }
         </div>
     </div>
 </body>

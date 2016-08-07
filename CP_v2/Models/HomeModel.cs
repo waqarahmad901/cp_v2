@@ -8,12 +8,13 @@ namespace CP_v2.Models
 {
     public class HomeModel
     {
-        public double? day { get; set; }
-        public double? Night { get; set; }
-        public double? week { get; set; }
-        public double? Month { get; set; }
-        public double? Yearly { get; set; }
+        public double day { get; set; }
+        public double Night { get; set; }
+        public double week { get; set; }
+        public double Month { get; set; }
+        public double Yearly { get; set; }
 
+        public long CurrentTokenNumber { get; set; }
         public List<parked_car> parkedCars { get; set; }
     }
 }

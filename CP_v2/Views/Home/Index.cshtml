@@ -2,12 +2,14 @@
 @{ Layout = null;
 }
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="carApp">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Car Parking</title>
     <link href="~/Content/styles.css" type="text/css" rel="stylesheet" />
-
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/Custom/checkin.js"></script>
 
     <script type="text/javascript">
 
@@ -25,7 +27,8 @@
             if (nmin <= 9) nmin = "0" + nmin;
             if (nsec <= 9) nsec = "0" + nsec;
 
-            document.getElementById('clocktime').value = nhour + " : " + nmin + " : " + nsec + ap + "";
+            document.getElementById('clockdate').value = "@DateTime.Now.ToString("dd-MMM-yyyy")   " + nhour + ":" + nmin + ":" + nsec + ap + "";
+            document.getElementById('htime').innerText = nhour + ":" + nmin + ":" + nsec + ap + "";
         }
 
         window.onload = function () {
@@ -51,8 +54,8 @@
         <div class="user">
             <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
             <div class="user-details">
-                <b>User Name</b><br />
-                Login Time: 02:50pm
+                <b>@User.Identity.Name</b><br />
+                Login Time: <span id="htime">02:50pm</span> 
             </div>
         </div>
     </div>
@@ -84,23 +87,19 @@
                             </p>
 
                             <p class="name">
-                                <input name="name" type="text" placeholder="Enter Vehicle No" />
+                                <input name="name" type="text" placeholder="Enter Vehicle No" required/>
                             </p>
 
                             <p class="name">
-                                <input name="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled=disabled />
+                                <input name="clockdate" id="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled=disabled />
                             </p>
 
-                            <p class="name">
-                                <input name="clocktime" id="clocktime" type="text" placeholder="Checkin Time" value="@DateTime.Now.ToShortTimeString()" disabled=disabled />
-                            </p>
-
-
+                         
                             <p class="price-for">
                                 <input type="checkbox" /> Night Parking
                             </p>
                             <div class="token">
-                                <div class="current-token"><span>Current Token No:</span> 405</div>
+                                <div class="current-token"><span>Current Token No:</span> @Model.CurrentTokenNumber</div>
 
                                 <div class="submit">
                                     <input type="submit" value="PRINT TOKEN" id="submit-button" />
@@ -112,14 +111,14 @@
             </div>
         </div>
         <div class="clear"></div>
-        <table>
+        <table ng-controller="checkincontroller">
             <tr>
                 <td colspan="6" class="filter">
                     <b>Filter By</b>
-                    <input type="text" placeholder="Enter Token No" />
-                    <input type="text" placeholder="Enter Vehicle No" />
-                    <input type="submit" value="Search" />
-                    <input type="submit" value="Clear" />
+                    <input type="number" ng-model="token_no" placeholder="Enter Token No" />
+                    <input type="text" ng-model="veh_no" placeholder="Enter Vehicle No" />
+                    <input type="submit" ng-click="pageClick(1)" value="Search" />
+                    <input type="submit" value="Clear" ng-click="clearControls()"/>
                 </td>
             </tr>
             <tr>
@@ -128,32 +127,26 @@
                 <th>Checkin Time</th>
                 <th>Checkout Time</th>
                 <th>Checkin Date</th>
+                <th>Checkin by</th>
                 <th>Recived</th>
             </tr>
-              @foreach (var item in Model.parkedCars)
-        {
-            <tr>
-                <td>@item.recript_no</td>
-                <td>@item.car_no</td>
-                <td>@item.parkin_time.Value.ToShortTimeString()</td>
-                <td>@(item.parkout_time == null ? "" : item.parkout_time.Value.ToShortTimeString()) </td>
-                <td>@item.parkin_time.Value.ToShortDateString()</td>
+            <tr ng-repeat="car in carTable.Cars">
+                <td>{{car.tokenNo }}</td>
+                <td>{{car.vehicle_NO }}</td>
+                <td>{{car.checkinTime }}</td>
+                <td>{{car.checkouttimeString }}</td>
+                <td>{{car.checkinDateString }}</td>
+                <td>{{car.checkinby }}</td>
                 <td><img src="~/images/check-mark.png" alt="" /></td>
             </tr>
-        }
+       
             <tr>
-                <td colspan="6">
+                <td colspan="7">
                     <div class="pagination">
                         <ul>
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a class="active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">»</a></li>
+                            <li ng-click="pageClick(carTable.CurrentPage - 1)" ng-if="carTable.CurrentPage != 1"><a ng-if="carTable.CurrentPage != 1" href="#">«</a></li>
+                            <li ng-repeat="n in range(1,carTable.TotalPages)" ng-click="pageClick(n)"><a ng-class="carTable.CurrentPage == n ? 'active' : ''" href="#">{{n}}</a></li>     
+                            <li ng-click="pageClick(carTable.CurrentPage + 1)"  ng-if="carTable.CurrentPage != 7"><a  ng-if="carTable.CurrentPage != 7" href="#">»</a></li>
                         </ul>
                     </div>
                 </td>

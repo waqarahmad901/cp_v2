@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CP_v2.DB;
+using CP_v2.Models;
 
 namespace CP_v2
 {
@@ -25,9 +26,28 @@ namespace CP_v2
             return _context.dur_amount.Where(x => x.veh_type.name.Equals("Car")).ToList();
         }
 
-        public List<parked_car> GetParkedCars()
+        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no)
         {
-            return _context.parked_car.OrderByDescending(x=>x.parkin_time).Take(20).ToList();
+            ParkedTableModel pt = new ParkedTableModel();
+            pt.TotalPages = 7;// _context.parked_car.Include("ap_user").OrderByDescending(x=>x.parkin_time).Count();
+            int recordsPerPage = 10;
+            long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no)? "0" : token_no);
+            pt.Cars = _context.parked_car.Where(x=> (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower())) &&(string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))).
+                OrderByDescending(x => x.parkin_time).Select(x =>
+                new ParkedCars
+                {
+                    Id = x.id,
+                    checkinby = x.ap_user == null ? "" : x.ap_user.username,
+                    checkinDate = x.parkin_time,
+                    checkoutDate = x.parkout_time,
+                   tokenNo = x.recript_no,
+                   vehicle_NO = x.car_no
+
+                }
+            ).Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
+            pt.CurrentPage = currentPage + 1;
+            return pt;
+
         }
 
         public bool AddNewParkedCar(parked_car car)

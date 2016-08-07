@@ -17,14 +17,10 @@ namespace CP_v2.Controllers
             DataClass da = new DataClass();
             var durationAmount = da.GetDurationAmount();
             HomeModel model = new HomeModel();
-            model.day = durationAmount.Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.Night = durationAmount.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.week = model.day.Value * 7;
-            model.Month = durationAmount.Where(x => x.duration_time.Equals("Month")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.Yearly = model.day * 12;
+           SetCurrentDurantionRate(durationAmount, model);
 
-            model.parkedCars = da.GetParkedCars();
-
+           // model.parkedCars = da.GetParkedCars();
+            model.CurrentTokenNumber = da.GetLastReciptNumber();
             if (Convert.ToString(Session["val"]) != string.Empty)
             {
                 ViewBag.pic = "~/images/" + Session["val"].ToString();
@@ -48,7 +44,7 @@ namespace CP_v2.Controllers
             pc.car_no = collection["name"];
             pc.date_created = DateTime.Now;
             pc.parkin_time = DateTime.Now;
-            pc.veh_type = Guid.Parse( collection["veh_type"]);
+            pc.veh_type = Guid.Parse(collection["veh_type"]);
             pc.recript_no = ticketNumber;
             da.AddNewParkedCar(pc);
 
@@ -62,14 +58,38 @@ namespace CP_v2.Controllers
 
             var durationAmount = da.GetDurationAmount();
             HomeModel model = new HomeModel();
-            model.day = durationAmount.Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.Night = durationAmount.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.week = model.day.Value * 7;
-            model.Month = durationAmount.Where(x => x.duration_time.Equals("Month")).Select(x => x.amount_to_charge).FirstOrDefault();
-            model.Yearly = model.day.Value * 12;
+            SetCurrentDurantionRate(durationAmount, model);
+            model.CurrentTokenNumber = ticketNumber;
 
-            model.parkedCars = da.GetParkedCars();
+           // model.parkedCars = da.GetParkedCars();
+
+            if (Convert.ToString(Session["val"]) != string.Empty)
+            {
+                ViewBag.pic = "~/images/" + Session["val"].ToString();
+            }
+            else
+            {
+                ViewBag.pic = "~/images/car-img.jpg";
+            }
+
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult GetParkedCars(int currentPage,string veh_no, string token_no)
+        {
+            DataClass da = new DataClass();
+            var cars = da.GetParkedCars(currentPage, veh_no, token_no);
+            return Json(cars, JsonRequestBehavior.AllowGet);
+        }
+
+        private static void SetCurrentDurantionRate(List<dur_amount> durationAmount, HomeModel model)
+        {
+            model.day = durationAmount.Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault().Value;
+            model.Night = durationAmount.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault().Value;
+            model.week = model.day * 7;
+            model.Month = durationAmount.Where(x => x.duration_time.Equals("Month")).Select(x => x.amount_to_charge).FirstOrDefault().Value;
+            model.Yearly = model.day * 12;
         }
 
         public ActionResult About()
