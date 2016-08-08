@@ -35,46 +35,66 @@ namespace CP_v2.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection collection)
         {
+           
+           // var durationAmount = da.GetDurationAmount();
+           // HomeModel model = new HomeModel();
+           // SetCurrentDurantionRate(durationAmount, model);
+           // model.CurrentTokenNumber = ticketNumber;
+
+           //// model.parkedCars = da.GetParkedCars();
+
+           // if (Convert.ToString(Session["val"]) != string.Empty)
+           // {
+           //     ViewBag.pic = "~/images/" + Session["val"].ToString();
+           // }
+           // else
+           // {
+           //     ViewBag.pic = "~/images/car-img.jpg";
+           // }
+
+            return View();
+        }
+
+        public ActionResult PrintTokenForCar(string veh_no,string veh_type, bool night)
+        {
             DataClass da = new DataClass();
             long ticketNumber = da.GetLastReciptNumber() + 1;
 
             parked_car pc = new parked_car();
             pc.id = Guid.NewGuid();
             pc.ap_user = da.GetUserByUserName(User.Identity.Name);
-            pc.car_no = collection["name"];
+            pc.car_no = veh_no;
             pc.date_created = DateTime.Now;
             pc.parkin_time = DateTime.Now;
-            pc.veh_type = Guid.Parse(collection["veh_type"]);
+            pc.veh_type = Guid.Parse(veh_type);
             pc.recript_no = ticketNumber;
             da.AddNewParkedCar(pc);
 
             PrintTicket pt = new PrintTicket();
-            pt.CarNumber = collection["name"];
+            pt.CarNumber = veh_no;
             pt.Price = "0.00";
             pt.TicketNumber = ticketNumber.ToString();
             pt.ImageTitle = Server.MapPath("~/images/CBT_Title.png");
             pt.ImageBarCode = Server.MapPath("~/images/code128bar.jpg");
-            pt.DrawTicket();
+        //    pt.DrawTicket();
+            Session["val"] = "";
+            return Json(ticketNumber,JsonRequestBehavior.AllowGet);
 
-            var durationAmount = da.GetDurationAmount();
-            HomeModel model = new HomeModel();
-            SetCurrentDurantionRate(durationAmount, model);
-            model.CurrentTokenNumber = ticketNumber;
-
-           // model.parkedCars = da.GetParkedCars();
-
-            if (Convert.ToString(Session["val"]) != string.Empty)
-            {
-                ViewBag.pic = "~/images/" + Session["val"].ToString();
-            }
-            else
-            {
-                ViewBag.pic = "~/images/car-img.jpg";
-            }
-
-            return View(model);
         }
-
+        [HttpGet]
+        public ActionResult RePrintTokenForCar(Guid id)
+        {
+            DataClass da = new DataClass();
+            parked_car car = da.GetParkedCarById(id);
+            PrintTicket pt = new PrintTicket();
+            pt.CarNumber = car.car_no;
+            pt.Price = "0.00";
+            pt.TicketNumber = car.recript_no.ToString();
+            pt.ImageTitle = Server.MapPath("~/images/CBT_Title.png");
+            pt.ImageBarCode = Server.MapPath("~/images/code128bar.jpg");
+            pt.DrawTicket();
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public ActionResult GetParkedCars(int currentPage,string veh_no, string token_no)
         {

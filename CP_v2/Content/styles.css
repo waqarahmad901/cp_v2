@@ -26,7 +26,7 @@ body{ background:url(../images/main-bg.jpg) no-repeat; background-position:cente
 .driver-img { position:absolute; width:20%; background:#000; z-index:999; margin:15px;}
 .driver-img img { width:100%; border:solid 5px red !important; }
 .data-entry{ margin:auto; padding:5px 0px 30px 0px; width:95%; overflow:hidden;}
-.carimg-side img{ width:98%; border:solid 5px #fff;}
+.carimg-side img{ width:98%; border:solid 5px #fff;height:300px}
 .width{ width:100%; float:left;}
 .filter input[type="submit"]{padding:5px 15px; margin-left:5px;}
 .price-for{}
@@ -59,7 +59,11 @@ body{ background:url(../images/main-bg.jpg) no-repeat; background-position:cente
     margin: 25px 0px 15px 0px;	
 }
 
-.pagination ul li {display: inline;}
+.ng-invalid-required {
+    border-color : red !important;
+}
+
+.pagination ul li {display: inline; cursor:pointer}
 
 .pagination ul li a {
     color: black;

@@ -12,10 +12,10 @@
     <script src="~/Scripts/Custom/checkin.js"></script>
 
     <script type="text/javascript">
-
+        var rootUrl = '@Url.Content("~/")';
         function GetClock() {
             var d = new Date();
-
+         
             if (nyear < 1000) nyear += 1900;
             var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
             var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
@@ -46,7 +46,7 @@
 
 </head>
 <body>
-    <div class="container">
+    <div class="container"  >
         <div class="head-login text-left">
             <div class="head-login-title">Raja Zahid Latif Contractor</div>
             <div class="slogan">slogan comes here. slogan comes here.</div>
@@ -61,7 +61,7 @@
     </div>
     <div class="clear"></div>
     <div class="white-sprtr"></div>
-    <div class="container">
+    <div class="container" ng-controller="checkincontroller">
         <div class="price-list">
             <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
             <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
@@ -72,37 +72,37 @@
         <div class="clear"></div>
         <div class="data-entry">
             <div class="carimg-side">
-                <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" onclick="ShowPopUp();" /></div>
+                <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" id="carimg" onclick="ShowPopUp();" /></div>
           
             </div>
             <div class="form-side">
                 <div class="login-form">
                     <div id="form-main">
-                        <form method="post" class="form">
+                        <form method="post" class="form" novalidate name="carform">
                             <p class="type">
-                                <select name="veh_type">
+                                <select ng-model="veh_type" required>
                                     <option value="89793349-9168-4246-96C8-7E35E99CBCEE">Car</option>
                                     <option value="1451355E-95B2-4AF8-B370-DC7131F40678">Bike</option>
                                 </select>
                             </p>
 
                             <p class="name">
-                                <input name="name" type="text" placeholder="Enter Vehicle No" required/>
+                                <input ng-model="veh_no_token" type="text" placeholder="Enter Vehicle No" required/>
                             </p>
 
                             <p class="name">
-                                <input name="clockdate" id="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled=disabled />
+                                <input name="clockdate" id="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled />
                             </p>
 
                          
                             <p class="price-for">
-                                <input type="checkbox" /> Night Parking
+                                <input type="checkbox" ng-model="night"/> Night Parking
                             </p>
                             <div class="token">
-                                <div class="current-token"><span>Current Token No:</span> @Model.CurrentTokenNumber</div>
+                                <div class="current-token"><span>Current Token No: </span> {{token_no_current}} </div>
 
                                 <div class="submit">
-                                    <input type="submit" value="PRINT TOKEN" id="submit-button" />
+                                    <input type="submit" ng-disabled="carform.$invalid" value="PRINT TOKEN" id="submit-button" ng-click="printToken()" />
                                 </div>
                             </div>
                         </form>
@@ -111,47 +111,7 @@
             </div>
         </div>
         <div class="clear"></div>
-        <table ng-controller="checkincontroller">
-            <tr>
-                <td colspan="6" class="filter">
-                    <b>Filter By</b>
-                    <input type="number" ng-model="token_no" placeholder="Enter Token No" />
-                    <input type="text" ng-model="veh_no" placeholder="Enter Vehicle No" />
-                    <input type="submit" ng-click="pageClick(1)" value="Search" />
-                    <input type="submit" value="Clear" ng-click="clearControls()"/>
-                </td>
-            </tr>
-            <tr>
-                <th>Token</th>
-                <th>Vehicle No</th>
-                <th>Checkin Time</th>
-                <th>Checkout Time</th>
-                <th>Checkin Date</th>
-                <th>Checkin by</th>
-                <th>Recived</th>
-            </tr>
-            <tr ng-repeat="car in carTable.Cars">
-                <td>{{car.tokenNo }}</td>
-                <td>{{car.vehicle_NO }}</td>
-                <td>{{car.checkinTime }}</td>
-                <td>{{car.checkouttimeString }}</td>
-                <td>{{car.checkinDateString }}</td>
-                <td>{{car.checkinby }}</td>
-                <td><img src="~/images/check-mark.png" alt="" /></td>
-            </tr>
-       
-            <tr>
-                <td colspan="7">
-                    <div class="pagination">
-                        <ul>
-                            <li ng-click="pageClick(carTable.CurrentPage - 1)" ng-if="carTable.CurrentPage != 1"><a ng-if="carTable.CurrentPage != 1" href="#">«</a></li>
-                            <li ng-repeat="n in range(1,carTable.TotalPages)" ng-click="pageClick(n)"><a ng-class="carTable.CurrentPage == n ? 'active' : ''" href="#">{{n}}</a></li>     
-                            <li ng-click="pageClick(carTable.CurrentPage + 1)"  ng-if="carTable.CurrentPage != 7"><a  ng-if="carTable.CurrentPage != 7" href="#">»</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        </table>
+         @Html.Partial("_CarParkingTable")
         <div class="copyright">&copy; 2016. All Rights Reserved.</div>
     </div>
 </body>

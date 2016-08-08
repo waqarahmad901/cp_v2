@@ -1,0 +1,41 @@
+﻿<table>
+    <tr>
+        <td colspan="6" class="filter">
+            <b>Filter By</b>
+            <input type="number" ng-model="token_no" placeholder="Enter Token No" />
+            <input type="text" ng-model="veh_no" placeholder="Enter Vehicle No" />
+            <input type="submit" ng-click="pageClick(1)" value="Search" />
+            <input type="submit" value="Clear" ng-click="clearControls()" />
+        </td>
+    </tr>
+    <tr>
+        <th>Token</th>
+        <th>Vehicle No</th>
+        <th>Checkin Time</th>
+        <th>Checkout Time</th>
+        <th>Checkin Date</th>
+        <th>Checkin by</th>
+        <th>Recived</th>
+    </tr>
+    <tr ng-repeat="car in carTable.Cars">
+        <td>{{car.tokenNo }}</td>
+        <td>{{car.vehicle_NO }}</td>
+        <td>{{car.checkinTime }}</td>
+        <td>{{car.checkouttimeString }}</td>
+        <td>{{car.checkinDateString }}</td>
+        <td>{{car.checkinby }}</td>
+        <td><input type="submit" value="Reprint" ng-click="reprintToken(car.Id)" /></td>
+    </tr>
+
+    <tr>
+        <td colspan="7">
+            <div class="pagination">
+                <ul>
+                    <li ng-click="pageClick(carTable.CurrentPage - 1)" ng-if="carTable.CurrentPage != 1"><a ng-if="carTable.CurrentPage != 1" >«</a></li>
+                    <li ng-repeat="n in range(1,carTable.TotalPages)" ng-click="pageClick(n)"><a ng-class="carTable.CurrentPage == n ? 'active' : ''" >{{n}}</a></li>
+                    <li ng-click="pageClick(carTable.CurrentPage + 1)" ng-if="carTable.CurrentPage != 7"><a ng-if="carTable.CurrentPage != 7" >»</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</table>

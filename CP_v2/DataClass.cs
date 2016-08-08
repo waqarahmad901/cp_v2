@@ -63,5 +63,10 @@ namespace CP_v2
                 return 0;
             return pc.recript_no;
         }
+
+        public parked_car GetParkedCarById(Guid id)
+        {
+            return _context.parked_car.Where(x => x.id == id).FirstOrDefault();
+        }
     }
 }
