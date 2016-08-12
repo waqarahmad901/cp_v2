@@ -14,7 +14,13 @@ namespace CP_v2
         {  
             return _context.ap_user.Where(x => x.username == userName && x.password == password).FirstOrDefault();
 
-        }    
+        }
+
+        public void AddPayment(payment pa)
+        {
+            _context.payments.Add(pa);
+            _context.SaveChanges();
+        }
 
         public ap_user GetUserByUserName(string userName)
         {
@@ -47,6 +53,19 @@ namespace CP_v2
             ).Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
             pt.CurrentPage = currentPage + 1;
             return pt;
+
+        }
+
+        public List<PaymentModel> GetAllPayemnts(string userName)
+        {
+            return _context.payments.Where(x => string.IsNullOrEmpty(userName) || x.ap_user.username.ToLower() == userName.ToLower())
+                .Select(x=> new PaymentModel
+                {
+                    username = x.ap_user.username,
+                    amount = x.amount,
+                    payment_type = x.payment_type,
+                    received_date = x.received_date
+                }).ToList();
 
         }
 

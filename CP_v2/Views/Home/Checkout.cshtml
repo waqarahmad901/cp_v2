@@ -1,4 +1,6 @@
 ﻿@model CP_v2.Models.HomeModel
+<script src="~/Scripts/Custom/checkin.js"></script>
+
 <div class="container" ng-controller="checkincontroller">
     <div class="price-list">
         <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
@@ -36,7 +38,7 @@
                                 <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isMonthly"/></div>
                                 <div class="clear"></div>
                                 <div class="gray-sprtr"></div>
-                                <div class="bold">Paid</div>
+                                <div class="bold">Paid</div> 
                                 <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isPaid"/></div>
                             </div>
                             <div class="submit width">
