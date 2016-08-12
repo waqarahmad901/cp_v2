@@ -1,118 +1,56 @@
 ﻿@model CP_v2.Models.HomeModel
-@{ Layout = null;
-}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="carApp">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Car Parking</title>
-    <link href="~/Content/styles.css" type="text/css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/angular.min.js"></script>
-    <script src="~/Scripts/Custom/checkin.js"></script>
+<div class="container" ng-controller="checkincontroller">
+    <div class="price-list">
+        <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
+        <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
+        <div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
+        <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>
+        <div class="price-circle">@Model.Yearly <sup>PKR</sup><span>Yearly Rate</span></div>
+    </div>
+    <div class="clear"></div>
+    <div class="data-entry">
+        <div class="carimg-side">
+            <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" id="carimg" onclick="ShowPopUp();" /></div>
+           
 
-    <script type="text/javascript">
-        var rootUrl = '@Url.Content("~/")';
-        function GetClock() {
-            var d = new Date();
-         
-            if (nyear < 1000) nyear += 1900;
-            var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
-            var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
-            if (nhour == 0) { ap = " AM"; nhour = 12; }
-            else if (nhour < 12) { ap = " AM"; }
-            else if (nhour == 12) { ap = " PM"; }
-            else if (nhour > 12) { ap = " PM"; nhour -= 12; }
-
-            if (nmin <= 9) nmin = "0" + nmin;
-            if (nsec <= 9) nsec = "0" + nsec;
-
-            document.getElementById('clockdate').value = "@DateTime.Now.ToString("dd-MMM-yyyy")   " + nhour + ":" + nmin + ":" + nsec + ap + "";
-            document.getElementById('htime').innerText = nhour + ":" + nmin + ":" + nsec + ap + "";
-        }
-
-        window.onload = function () {
-            GetClock();
-            setInterval(GetClock, 1000);
-        }
-
-        function ShowPopUp() {
-
-            window.open('@Url.Content("~/Photo/Index/")', "wndPopUp", 'width=720,height=400,left=100,top=100,resizable=no');
-
-        }
-    </script>
-
-
-</head>
-<body>
-    <div class="container"  >
-        <div class="head-login text-left">
-            <div class="head-login-title">Raja Zahid Latif Contractor</div>
-            <div class="slogan">slogan comes here. slogan comes here.</div>
         </div>
-        <div class="user">
-            <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
-            <div class="user-details">
-                <b>@User.Identity.Name</b><br />
-                Login Time: <span id="htime">02:50pm</span> 
+        <div class="form-side">
+            <div class="login-form">
+                <div id="form-main">
+                    <form method="post" class="form" novalidate=novalidate name="carform">
+                        <p class="type">
+                            <select ng-model="veh_type" required=required>
+                                <option value="89793349-9168-4246-96C8-7E35E99CBCEE">Car</option>
+                                <option value="1451355E-95B2-4AF8-B370-DC7131F40678">Bike</option>
+                            </select>
+                        </p>
+                        <input type="hidden" id="vehimage" value="@ViewBag.pic" />
+                        <p class="name">
+                            <input ng-model="veh_no_token" type="text" placeholder="Enter Vehicle No" required=required />
+                        </p>
+
+                        <p class="name">
+                            <input name="clockdate" id="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled=disabled />
+                        </p>
+
+
+                        <p class="price-for">
+                            <input type="checkbox" ng-model="night" /> Night Parking
+                        </p>
+                        <div class="token">
+                            <div class="current-token"><span>Current Token No: </span> {{token_no_current}} </div>
+
+                            <div class="submit">
+                                <input type="submit" ng-disabled="carform.$invalid" value="PRINT TOKEN" id="submit-button" ng-click="printToken()" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
     <div class="clear"></div>
-    <div class="white-sprtr"></div>
-    <div class="container" ng-controller="checkincontroller">
-        <div class="price-list">
-            <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
-            <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
-            <div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
-            <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>
-            <div class="price-circle">@Model.Yearly <sup>PKR</sup><span>Yearly Rate</span></div>
-        </div>
-        <div class="clear"></div>
-        <div class="data-entry">
-            <div class="carimg-side">
-                <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" id="carimg" onclick="ShowPopUp();" /></div>
-          
-            </div>
-            <div class="form-side">
-                <div class="login-form">
-                    <div id="form-main">
-                        <form method="post" class="form" novalidate name="carform">
-                            <p class="type">
-                                <select ng-model="veh_type" required>
-                                    <option value="89793349-9168-4246-96C8-7E35E99CBCEE">Car</option>
-                                    <option value="1451355E-95B2-4AF8-B370-DC7131F40678">Bike</option>
-                                </select>
-                            </p>
+    @Html.Partial("_CarParkingTable")
+    <div class="copyright">&copy; 2016. All Rights Reserved.</div>
+</div>
 
-                            <p class="name">
-                                <input ng-model="veh_no_token" type="text" placeholder="Enter Vehicle No" required/>
-                            </p>
-
-                            <p class="name">
-                                <input name="clockdate" id="clockdate" type="text" placeholder="Checkin Date" value="@DateTime.Now.ToString("dd - MMM - yyyy")" disabled />
-                            </p>
-
-                         
-                            <p class="price-for">
-                                <input type="checkbox" ng-model="night"/> Night Parking
-                            </p>
-                            <div class="token">
-                                <div class="current-token"><span>Current Token No: </span> {{token_no_current}} </div>
-
-                                <div class="submit">
-                                    <input type="submit" ng-disabled="carform.$invalid" value="PRINT TOKEN" id="submit-button" ng-click="printToken()" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="clear"></div>
-         @Html.Partial("_CarParkingTable")
-        <div class="copyright">&copy; 2016. All Rights Reserved.</div>
-    </div>
-</body>
-</html>

@@ -24,6 +24,8 @@
         <AssociationConnector Association="car_parkingModel.FK_duration_charges_duration" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parked_car_veh_type" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parkedcar_viewlog_parked_car" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="car_parkingModel.payment" Width="1.5" PointX="3" PointY="14.875" />
+        <AssociationConnector Association="car_parkingModel.FK_payment_ap_user" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

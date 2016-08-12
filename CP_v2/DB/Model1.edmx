@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="car_parkingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="car_parkingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ap_user">
           <Key>
             <PropertyRef Name="id" />
@@ -83,6 +83,8 @@
           <Property Name="out_by" Type="uniqueidentifier" />
           <Property Name="is_nightly" Type="bit" />
           <Property Name="is_updateby_admin" Type="bit" />
+          <Property Name="checkinimage" Type="nvarchar" MaxLength="500" />
+          <Property Name="checkoutimage" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="parkedcar_viewlog">
           <Key>
@@ -92,6 +94,16 @@
           <Property Name="parked_car_id" Type="uniqueidentifier" />
           <Property Name="date_viewed" Type="datetime" />
           <Property Name="viewed_by" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="userid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="received_date" Type="datetime" Nullable="false" />
+          <Property Name="payment_type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -221,6 +233,18 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_payment_ap_user">
+          <End Role="ap_user" Type="Self.ap_user" Multiplicity="1" />
+          <End Role="payment" Type="Self.payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ap_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_user_daycount_ap_user">
           <End Role="ap_user" Type="Self.ap_user" Multiplicity="0..1" />
           <End Role="user_daycount" Type="Self.user_daycount" Multiplicity="*" />
@@ -272,6 +296,7 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           <EntitySet Name="monthly_reg" EntityType="Self.monthly_reg" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="parked_car" EntityType="Self.parked_car" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="parkedcar_viewlog" EntityType="Self.parkedcar_viewlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="payment" EntityType="Self.payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="system_configs" EntityType="Self.system_configs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_daycount" EntityType="Self.user_daycount" Schema="dbo" store:Type="Tables" />
@@ -318,13 +343,16 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
             <End Role="parked_car" EntitySet="parked_car" />
             <End Role="parkedcar_viewlog" EntitySet="parkedcar_viewlog" />
           </AssociationSet>
+          <AssociationSet Name="FK_payment_ap_user" Association="Self.FK_payment_ap_user">
+            <End Role="ap_user" EntitySet="ap_user" />
+            <End Role="payment" EntitySet="payment" />
+          </AssociationSet>
           <AssociationSet Name="FK_user_daycount_ap_user" Association="Self.FK_user_daycount_ap_user">
             <End Role="ap_user" EntitySet="ap_user" />
             <End Role="user_daycount" EntitySet="user_daycount" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="car_parkingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -347,6 +375,7 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           <NavigationProperty Name="parked_car" Relationship="Self.FK_parked_car_ap_user" FromRole="ap_user" ToRole="parked_car" />
           <NavigationProperty Name="parkedcar_viewlog" Relationship="Self.FK_parkedcar_viewlog_ap_user" FromRole="ap_user" ToRole="parkedcar_viewlog" />
           <NavigationProperty Name="user_daycount" Relationship="Self.FK_user_daycount_ap_user" FromRole="ap_user" ToRole="user_daycount" />
+          <NavigationProperty Name="payments" Relationship="car_parkingModel.FK_payment_ap_user" FromRole="ap_user" ToRole="payment" />
         </EntityType>
         <EntityType Name="dur_amount">
           <Key>
@@ -415,6 +444,8 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           <NavigationProperty Name="ap_user" Relationship="Self.FK_parked_car_ap_user" FromRole="parked_car" ToRole="ap_user" />
           <NavigationProperty Name="veh_type1" Relationship="Self.FK_parked_car_veh_type" FromRole="parked_car" ToRole="veh_type" />
           <NavigationProperty Name="parkedcar_viewlog" Relationship="Self.FK_parkedcar_viewlog_parked_car" FromRole="parked_car" ToRole="parkedcar_viewlog" />
+          <Property Name="checkinimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="checkoutimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="parkedcar_viewlog">
           <Key>
@@ -639,6 +670,11 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="payments" EntityType="car_parkingModel.payment" />
+          <AssociationSet Name="FK_payment_ap_user" Association="car_parkingModel.FK_payment_ap_user">
+            <End Role="ap_user" EntitySet="ap_user" />
+            <End Role="payment" EntitySet="payments" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -651,6 +687,29 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="userid" Type="Guid" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="received_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="payment_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ap_user" Relationship="car_parkingModel.FK_payment_ap_user" FromRole="payment" ToRole="ap_user" />
+        </EntityType>
+        <Association Name="FK_payment_ap_user">
+          <End Type="car_parkingModel.ap_user" Role="ap_user" Multiplicity="1" />
+          <End Type="car_parkingModel.payment" Role="payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ap_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payment">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -722,6 +781,8 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           <EntitySetMapping Name="parked_car">
             <EntityTypeMapping TypeName="car_parkingModel.parked_car">
               <MappingFragment StoreEntitySet="parked_car">
+                <ScalarProperty Name="checkoutimage" ColumnName="checkoutimage" />
+                <ScalarProperty Name="checkinimage" ColumnName="checkinimage" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="car_no" ColumnName="car_no" />
                 <ScalarProperty Name="veh_type" ColumnName="veh_type" />
@@ -835,6 +896,17 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="car_parkingModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="car_parkingModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="payments">
+            <EntityTypeMapping TypeName="car_parkingModel.payment">
+              <MappingFragment StoreEntitySet="payment">
+                <ScalarProperty Name="payment_type" ColumnName="payment_type" />
+                <ScalarProperty Name="received_date" ColumnName="received_date" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

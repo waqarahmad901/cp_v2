@@ -14,6 +14,52 @@ angular.module('carApp', [])
           return input;
       };
 
+      $scope.checkoutTokenInfo = function (keyEvent) {
+          if (keyEvent.which === 13)
+          {
+              var data = {
+                  token_no: $scope.out_token_no
+                  
+              };
+              var config = {
+                  params: data,
+                  headers: { 'Accept': 'application/json' }
+              };
+
+              $http.get(rootUrl + "Home/GetCheckoutTokenInfo", config)
+                   .then(function (response) {
+                       if (response.data == "null")
+                           alert("No car found. ");
+                       else
+                       $scope.checkout = response.data;
+                   });
+          }
+      }
+
+      $scope.checkoutClick = function (checkout)
+      {
+          if ($scope.checkout == null) {
+              alert("Please enter valid car no. or token no.");
+              return;
+          }
+          var data = {
+              id: checkout.Id,
+              vehimage: document.getElementById("vehimage") == undefined ? null : document.getElementById("vehimage").value
+          };
+          var config = {
+              params: data,
+              headers: { 'Accept': 'application/json' }
+          };
+
+          $http.get(rootUrl + "Home/CheckOutCar", config)
+               .then(function (response) {
+                   $scope.checkout = null;
+                   $scope.pageClick(1);
+                  // alert("car checkout successfully");
+               });
+      }
+      
+
       $scope.pageClick = function (page) {
          
           var data = {
@@ -46,6 +92,7 @@ angular.module('carApp', [])
               veh_no: $scope.veh_no_token,
               veh_type: $scope.veh_type,
               night: $scope.night,
+              vehimage: document.getElementById("vehimage") == undefined ? null : document.getElementById("vehimage").value
           };
 
           var config = {

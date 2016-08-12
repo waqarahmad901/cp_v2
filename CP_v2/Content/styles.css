@@ -19,6 +19,13 @@ body{ background:url(../images/main-bg.jpg) no-repeat; background-position:cente
 .price-circle sup{ font-size:13px; font-style:italic;}
 .price-circle span{ font-size:15px; display:block; font-weight:normal;}
 .no-margin{ margin-left:0px !important;}
+.width-full{width:90% !important; margin:auto !important; float:none !important}
+.width-half{ width:48%; margin-left:25px; float:left;}
+.print{ float:right;}
+.print a img{ border:none;}
+.print a img:hover{ border:none; opacity:0.5;}
+.button-width{ width:25% !important; margin:auto !important; float:none !important;}
+
 .form-side{ width:40%; float:left;}
 .carimg-side{ width:55%; float:right; position:relative;}
 .vehicle-img { position:absolute; width:100%;}
@@ -126,7 +133,7 @@ tr:nth-child(even) {
 	box-sizing: border-box;
   border: 3px solid rgba(0,0,0,0);
 	}
-	.form input[type="text"]{
+	.form input[type="text"],.form input[type="number"]{
 	color:#2e2e2e;
 	font-family: Helvetica, Arial, sans-serif;
   font-weight:500;
@@ -236,3 +243,10 @@ tr:nth-child(even) {
 .login-form {overflow:hidden;}
 .login-form a{ color:#fff; margin-top:20px; display:block;}
 .align{ text-align:center;}
+
+/*** Navigation CSS ***/
+.nav {background-color:#2d313b;}
+.nav ul {list-style-type: none;margin: 0;padding: 0; overflow: hidden;}
+.nav li {float: left;}
+.nav li a {display: block;color: white;text-align: center; padding: 15px 25px;text-decoration: none;}
+.nav li a:hover { background-color: #111;}

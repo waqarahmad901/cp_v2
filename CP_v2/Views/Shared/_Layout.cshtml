@@ -1,44 +1,81 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="carApp">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Car Parking</title>
+    <link href="~/Content/styles.css" type="text/css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/Custom/checkin.js"></script>
+
+    <script type="text/javascript">
+        var rootUrl = '@Url.Content("~/")';
+        function GetClock() {
+            var d = new Date();
+
+            if (nyear < 1000) nyear += 1900;
+            var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
+            var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
+            if (nhour == 0) { ap = " AM"; nhour = 12; }
+            else if (nhour < 12) { ap = " AM"; }
+            else if (nhour == 12) { ap = " PM"; }
+            else if (nhour > 12) { ap = " PM"; nhour -= 12; }
+
+            if (nmin <= 9) nmin = "0" + nmin;
+            if (nsec <= 9) nsec = "0" + nsec;
+            if (document.getElementById('clockdate') != undefined)
+                document.getElementById('clockdate').value = "@DateTime.Now.ToString("dd-MMM-yyyy")   " + nhour + ":" + nmin + ":" + nsec + ap + "";
+            document.getElementById('htime').innerText = nhour + ":" + nmin + ":" + nsec + ap + "";
+        }
+
+        window.onload = function () {
+            GetClock();
+            setInterval(GetClock, 1000);
+        }
+
+        function setCarImage(src) {
+            $('#carimg').attr('src', src);
+            $('#vehimage').val(src);
+
+        }
+
+        function ShowPopUp() {
+
+            window.open('@Url.Content("~/Photo/Index/")', "wndPopUp", 'width=720,height=400,left=100,top=100,resizable=no');
+
+        }
+    </script>
+
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+    <div class="container">
+        <div class="head-login text-left">
+            <div class="head-login-title">Raja Zahid Latif Contractor</div>
+            <div class="slogan">slogan comes here. slogan comes here.</div>
+        </div>
+        <div class="user">
+            <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
+            <div class="user-details">
+                <b>@User.Identity.Name</b><br />
+                Login Time: <span id="htime">02:50pm</span>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <div class="clear"></div>
+    <div class="nav">
+        <div class="container">
+            <ul>
+                <li><a class="active" href="@Url.Action("Index","Home")">Checkin</a></li>
+                <li><a href="@Url.Action("Checkout", "Home")">Checkout</a></li>
+                <li><a href="@Url.Action("Index", "Payment")">Payment</a></li>
+                <li><a href="payment-received.html">Report</a></li>
+                <li><a href="monthly-car-bike.html">Monthly Subscription</a></li>
+            </ul>
+        </div>
     </div>
+    <div class="clear"></div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderBody()
 </body>
 </html>

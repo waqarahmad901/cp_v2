@@ -66,6 +66,8 @@
     <EntitySetMapping Name="parked_car">
       <EntityTypeMapping TypeName="car_parkingModel.parked_car">
         <MappingFragment StoreEntitySet="parked_car">
+          <ScalarProperty Name="checkoutimage" ColumnName="checkoutimage" />
+          <ScalarProperty Name="checkinimage" ColumnName="checkinimage" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="car_no" ColumnName="car_no" />
           <ScalarProperty Name="veh_type" ColumnName="veh_type" />
@@ -179,5 +181,16 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="car_parkingModel.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="car_parkingModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="payments">
+      <EntityTypeMapping TypeName="car_parkingModel.payment">
+        <MappingFragment StoreEntitySet="payment">
+          <ScalarProperty Name="payment_type" ColumnName="payment_type" />
+          <ScalarProperty Name="received_date" ColumnName="received_date" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

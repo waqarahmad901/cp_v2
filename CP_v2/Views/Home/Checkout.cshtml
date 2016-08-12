@@ -1,0 +1,55 @@
+﻿@model CP_v2.Models.HomeModel
+<div class="container" ng-controller="checkincontroller">
+    <div class="price-list">
+        <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
+        <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
+        <div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
+        <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>
+        <div class="price-circle">@Model.Yearly <sup>PKR</sup><span>Yearly Rate</span></div>
+    </div>
+    <div class="clear"></div>
+    <div class="data-entry">
+        <div class="carimg-side">
+            <div class="vehicle-img"><img src="@Url.Content(@ViewBag.pic)" alt="" id="carimg" onclick="ShowPopUp();" /></div>
+
+        </div>
+        <div class="form-side">
+            <div class="login-form">
+                <div id="form-main">
+                    <form class="form" id="form1" name="outform" novalidate>
+                        <input type="hidden" id="vehimage" value="@ViewBag.pic" />
+
+                        <p class="no">
+                            <input type="text" ng-model="out_token_no" ng-keypress="checkoutTokenInfo($event)" placeholder="Enter Car No OR Token No" required />
+                        </p>
+                        <div class="token">
+                            <div class="checkin-detail">
+                                <div class="bold">Total time</div>
+                                <div class="normal">{{checkout.time}}</div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
+                                <div class="bold">Total Amount</div>
+                                <div class="normal">{{checkout.totalAmount}}/-</div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
+                                <div class="bold">Monthly Package</div>
+                                <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isMonthly"/></div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
+                                <div class="bold">Paid</div>
+                                <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isPaid"/></div>
+                            </div>
+                            <div class="submit width">
+                                <input type="button" value="Check Out" id="submit-button" ng-click="checkoutClick(checkout)" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    @Html.Partial("_CarParkingTable")
+    <div class="copyright">&copy; 2016. All Rights Reserved.</div>
+</div>
+

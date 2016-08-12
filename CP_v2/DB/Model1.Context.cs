@@ -39,6 +39,7 @@ namespace CP_v2.DB
         public virtual DbSet<user_daycount> user_daycount { get; set; }
         public virtual DbSet<veh_type> veh_type { get; set; }
         public virtual DbSet<View_1> View_1 { get; set; }
+        public virtual DbSet<payment> payments { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

@@ -171,6 +171,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="DB\payment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\ParkedCars.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="DataClass.cs" />
@@ -268,6 +273,7 @@
     <Content Include="images\icon-password.png" />
     <Content Include="images\icon-user.png" />
     <Content Include="images\main-bg.jpg" />
+    <Content Include="images\print-report.png" />
     <Content Include="images\user-img.jpg" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -315,9 +321,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Home\_CarParkingTable.cshtml" />
+    <Content Include="Views\Home\Checkout.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Paymemt\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

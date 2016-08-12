@@ -37,6 +37,8 @@ namespace CP_v2.DB
         public Nullable<System.Guid> out_by { get; set; }
         public Nullable<bool> is_nightly { get; set; }
         public Nullable<bool> is_updateby_admin { get; set; }
+        public string checkinimage { get; set; }
+        public string checkoutimage { get; set; }
     
         public virtual ap_user ap_user { get; set; }
         public virtual veh_type veh_type1 { get; set; }

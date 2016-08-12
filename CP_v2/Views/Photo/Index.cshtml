@@ -13,28 +13,21 @@
             dataType: 'json',
             success: function (data) {
                 $("#show").attr("src", data);
-                document.getElementById('Submit1').disabled = false;
-                alert("Photo Capture successfully!");
+                document.getElementById('Submit1').disabled = false; 
             }
         });
     }
 
     function Uploadsubmit() {
+        webcam.capture();
         debugger;
         var src = $('img').attr('src');
-        src_array = src.split('/');
-        src = src_array[4];
-        if (src != "") {
-            $.ajax({
-                type: 'POST',
-                url: ("@Url.Content("~/Photo/Index")"),
-                dataType: 'json',
-                data: { Imagename: src },
-                success: function () { }
-            });
-            window.opener.location.href = "@Url.Content("~/Home/Index")";
+      
             self.close();
-        }
+        
+            window.opener.setCarImage(src);
+         
+        
     }
 </script>
 

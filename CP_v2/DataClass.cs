@@ -64,9 +64,31 @@ namespace CP_v2
             return pc.recript_no;
         }
 
+        public bool CheckCarRegisterInCurrentMonth(string veh_no)
+        {
+            return _context.monthly_reg.Any(x => x.month_name == DateTime.Now.Month.ToString() && x.vehicle_no.ToLower().Equals(veh_no));
+        }
+
         public parked_car GetParkedCarById(Guid id)
         {
             return _context.parked_car.Where(x => x.id == id).FirstOrDefault();
+        }
+
+        public void Update()
+        {
+            _context.SaveChanges();
+        }
+
+        public parked_car GetParkedCarByTokenNo(string token_no)
+        {
+            long result = 0;
+            bool token = long.TryParse(token_no,out result);
+            parked_car car = null;
+            if(token)
+                car = _context.parked_car.Where(x=> x.recript_no == result).FirstOrDefault();
+            if(car == null)
+                car = _context.parked_car.Where(x => x.car_no.Contains(token_no)).FirstOrDefault();
+            return car;
         }
     }
 }

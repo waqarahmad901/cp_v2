@@ -20,6 +20,7 @@ namespace CP_v2.DB
             this.parked_car = new HashSet<parked_car>();
             this.parkedcar_viewlog = new HashSet<parkedcar_viewlog>();
             this.user_daycount = new HashSet<user_daycount>();
+            this.payments = new HashSet<payment>();
         }
     
         public System.Guid id { get; set; }
@@ -41,5 +42,7 @@ namespace CP_v2.DB
         public virtual ICollection<parkedcar_viewlog> parkedcar_viewlog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_daycount> user_daycount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<payment> payments { get; set; }
     }
 }
