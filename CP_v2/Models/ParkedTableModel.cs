@@ -11,6 +11,10 @@ namespace CP_v2.Models
         public int TotalPages { get; set; }
         public List<ParkedCars> Cars { get; set; }
 
-        public string token_no_current { get { return Cars.FirstOrDefault().tokenNo.ToString(); } }
+        public int TotalParkedCars { get; set; }
+
+        public string token_no_current { get { return Cars.Count > 0 ? Cars.FirstOrDefault().tokenNo.ToString() : ""; } }
+
+
     }
 }

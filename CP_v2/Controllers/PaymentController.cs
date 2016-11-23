@@ -8,6 +8,7 @@ using CP_v2.Models;
 
 namespace CP_v2.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
         // GET: Paymemt
@@ -32,7 +33,8 @@ namespace CP_v2.Controllers
         public ActionResult GetAllPayments(string userName)
         {
             DataClass da = new DataClass();
-            List<PaymentModel> payments = da.GetAllPayemnts(userName);
+           var payments = da.GetAllPayemnts(userName,1);
+
             return Json(payments, JsonRequestBehavior.AllowGet);
         }
     }

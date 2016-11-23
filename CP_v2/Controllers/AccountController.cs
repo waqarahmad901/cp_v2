@@ -15,6 +15,14 @@ namespace CP_v2.Controllers
         {
             return View();
         }
+
+        public ActionResult GetAllUsers()
+        {
+            DataClass da = new DataClass();
+            var users = da.GetAllUsers().Select(x=> new {name = x.username }).ToList();
+            return Json(users, JsonRequestBehavior.AllowGet);
+
+        }
         //
         // POST: /Account/Login
         [HttpPost]

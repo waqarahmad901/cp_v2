@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/Custom/MonthlySubscription.js"></script>
+<div class="container" ng-controller="monthlySubscriptionController">
+    <br /><br />
+    <div class="data-entry">
+        <div class="form-side width-full" >
+            <div class="login-form">
+                <div id="form-main">
+                    <form class="form" name="form1" novalidate>
+                        <div class="width-half no-margin">
+                            <p class="type">
+                                <input ng-model="carbike" type="text" placeholder="Car/Bike Number" required />
+                            </p>
+
+                            <p class="no">
+                                <input ng-model="cnic" type="text" placeholder="CNIC Number" required />
+                            </p>
+                            <p class="type">
+                                <input ng-model="month" type="text" placeholder="Month" required />
+                            </p>
+                        </div>
+                        <div class="width-half">
+                            <p class="date">
+                                <input ng-model="mobilenumber" type="text" placeholder="Mobile Number" required />
+                            </p>
+                            <p class="date">
+                                <input ng-model="amount" type="text" placeholder="Amount" required />
+                            </p>
+                            <p class="no">
+                                <input ng-model="ownername" type="text" placeholder="Owner Name" required />
+                            </p>
+                        </div>
+
+                        <div class="token button-width">
+                            <div class="submit">
+                                <input type="submit" value="ADD" id="submit-button" ng-click="addSubscription()" ng-disabled="form1.$invalid"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <table>
+        <tr>
+            <td colspan="6" class="filter">
+                <b>Filter By</b>
+                <input type="text" ng-model="carnosearch" placeholder="Car No" />
+                <input type="text" ng-model="ownernamesearch" placeholder="Enter Owner Name" />
+                <input type="submit" ng-click="search()" value="Search" />
+                <input type="submit" value="Clear" />
+            </td>
+        </tr>
+        <tr>
+            <th>Car No</th>
+            <th>Mobile No.</th>
+            <th>Cnic</th>
+            <th>Owner Name.</th>
+            <th>Month.</th>
+            <th>Amount.</th>
+        </tr>
+        <tr ng-repeat="p in subscriptionTable.Subscriptions">
+            <td>{{p.carno}}</td>
+            <td>{{p.mobileno}}</td>
+            <td>{{p.cninc}}</td>
+            <td>{{p.ownername}}</td>
+            <td>{{p.month}}</td>
+            <td>{{p.amount}}</td>
+        </tr>
+        
+        @*<tr>
+            <td colspan="6">
+                <div class="pagination">
+                    <ul>
+                        <li><a href="#">«</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a class="active" href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">6</a></li>
+                        <li><a href="#">7</a></li>
+                        <li><a href="#">»</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>*@
+    </table>
+    <div class="copyright">&copy; 2016. All Rights Reserved.</div>
+</div>

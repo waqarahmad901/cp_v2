@@ -14,6 +14,8 @@ namespace CP_v2.Models
         public double Month { get; set; }
         public double Yearly { get; set; }
 
+        public int ParkedInCars { get; set; }
+
         public long CurrentTokenNumber { get; set; }
         public List<parked_car> parkedCars { get; set; }
     }

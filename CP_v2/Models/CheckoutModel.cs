@@ -14,5 +14,7 @@ namespace CP_v2.Models
         public bool isMonthly { get; set; }
         public bool isPaid { get; set; }
 
+        public int parkinCars { get; set; }
+
     }
 }

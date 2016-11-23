@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/Custom/report.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-ui.js"></script>
+
+<div class="container" ng-controller="reportController">
+    <br /><br />
+    <div class="data-entry">
+        <div class="form-side width-full">
+            <div class="login-form">
+                <div id="form-main">
+                    <form class="form" name="form1" novalidate>
+                        <div class="width-half no-margin">
+                            <p class="type">
+                                <input ng-model="from" type="text" placeholder="From" class="datepicker"/>
+                            </p>
+
+                            <p class="no">
+                                <input ng-model="to" type="text" placeholder="to" class="datepicker"/>
+                            </p>
+                        </div>
+
+                        <div class="token button-width">
+                            <div class="submit">
+                                <input type="submit" value="Search" id="submit-button" ng-click="searchReport()" ng-disabled="form1.$invalid" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <table>
+
+        <tr>
+
+            <th>User</th>
+            <th>Total Amount</th>
+            <th>Total Parked In</th>
+            <th>Total Parked Out.</th>
+            <th>First Checkin</th>
+            <th>Last Checkout.</th>
+        </tr>
+        <tr ng-repeat="p in paymentTable">
+
+            <td>{{p.user}}</td>
+            <td>{{p.totalAmount}}</td>
+            <td>{{p.totalParkedIn}}</td>
+            <td>{{p.totalParkedOut}}</td>
+            <td>{{p.parkedInTime}}</td>
+            <td>{{p.parkedOutTime}}</td>
+        </tr>
+
+        @*<tr>
+                <td colspan="6">
+                    <div class="pagination">
+                        <ul>
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a class="active" href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">6</a></li>
+                            <li><a href="#">7</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>*@
+    </table>
+    <div class="copyright">&copy; 2016. All Rights Reserved.</div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
+    });
+
+</script>
