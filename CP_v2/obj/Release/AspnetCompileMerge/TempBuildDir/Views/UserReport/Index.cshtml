@@ -23,12 +23,9 @@
                     <form class="form" name="form1" novalidate>
                         <div class="width-half no-margin">
                             <p class="type">
-                                <input ng-model="from" type="text" placeholder="From" class="datepicker"/>
+                                <input ng-model="from" type="text" placeholder="From" class="datepicker" />
                             </p>
 
-                            <p class="no">
-                                <input ng-model="to" type="text" placeholder="to" class="datepicker"/>
-                            </p>
                         </div>
 
                         <div class="token button-width">
@@ -42,45 +39,55 @@
         </div>
     </div>
     <div class="clear"></div>
-    <table>
+    <div style="background-color:white; color:black; padding:15px; border-radius:2%">
 
-        <tr>
+        <div ng-repeat="shift in shifts">
+            <h2 style="text-decoration:underline; float:left">Shift {{$index + 1}}</h2> <div style="float:left;font-size: 12pt;padding-top: 28px; margin-left: 10px;">({{shift.FromTime}}   <b>To</b>   {{shift.ToTime}})</div> 
+            <div style="width:100%; float:left; margin-bottom: 10px;">
+                <div style="float:left;width: 200px;">
+                    Total Cash for shift:
+                </div>
+                <div style="float:left; margin-left:10%">
+                    <b> {{shift.CashForShift}}</b>
+                </div>
+            
+                <div style="float:left;width: 200px;margin-left:10%">
+                    Total Vehicle Parked In:
+                </div>
 
-            <th>User</th>
-            <th>Total Amount</th>
-            <th>Total Parked In</th>
-            <th>Total Parked Out.</th>
-            <th>First Checkin</th>
-            <th>Last Checkout.</th>
-        </tr>
-        <tr ng-repeat="p in paymentTable">
+                <div style="float:left; margin-left:10%">
+                    <b>  {{shift.TotalVehicleIn}}</b>
+                </div>
+            </div>
+            <div style="width:100%; float:left; margin-bottom: 10px;">
+                <div style="float:left;width: 200px;">
+                    Total Vehicle Parked Out:
+                </div>
 
-            <td>{{p.user}}</td>
-            <td>{{p.totalAmount}}</td>
-            <td>{{p.totalParkedIn}}</td>
-            <td>{{p.totalParkedOut}}</td>
-            <td>{{p.parkedInTime}}</td>
-            <td>{{p.parkedOutTime}}</td>
-        </tr>
+                <div style="float:left; margin-left:10%">
+                    <b>{{shift.TotalVehicleOut}}</b> 
+                </div>
+            </div>
+            <table style="margin-bottom:10px">
 
-        @*<tr>
-                <td colspan="6">
-                    <div class="pagination">
-                        <ul>
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a class="active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>*@
-    </table>
+                <tr>
+
+                    <th>User</th>
+                    <th>Total Parked In</th>
+                    <th>Total Parked Out.</th>
+                    <th>Total Amount</th> 
+                </tr>
+                <tr ng-repeat="p in shift.shiftsTable">
+
+                    <td>{{p.user}}</td> 
+                    <td>{{p.totalParkedIn}}</td>
+                    <td>{{p.totalParkedOut}}</td>
+                    <td>{{p.totalAmount}}</td> 
+                </tr>
+
+            </table>
+        </div>
+    </div>
     <div class="copyright">&copy; 2016. All Rights Reserved.</div>
 </div>
 

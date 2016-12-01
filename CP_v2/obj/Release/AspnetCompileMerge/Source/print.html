@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        debugger;
+        $(document).ready(function () {
+            $("#ticket").text(getParameterByName("token"));
+            $("#car").text(getParameterByName("car"));
+            $("#night").text(getParameterByName("night"));
+            $("#time").text(getParameterByName("date"));
+
+        })
+
+    </script>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"></head><body style="transform: scale(1);">
+    <div style="background-color:white; color:black;" id="recipt">
+        <div style="text-align:center">
+            <h1>RDA, Parking Plaza</h1>
+            <h2>Fawara Chowk Raja Bazar</h2>
+            <h2>Rawalpindi</h2>
+            <hr>
+            <table style="margin: 0px auto; font-size: 25px;" border="0">
+                <tbody><tr>
+                    <td>
+                        Car No:
+                    </td>
+                    <td>
+                        <b><span id="car"></span></b> 
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ticket No:
+                    </td>
+                    <td>
+                        <b><span id="ticket"></span></b> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Night:
+                    </td>
+                    <td>
+                        <span id="night"></span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Date Generated:
+                    </td>
+                    <td>
+                        <span id="time"></span>
+
+                    </td>
+                </tr>
+            </tbody></table>
+            <div style="text-align:center">
+                <h2>RS 30 Per Hour</h2>
+                </div>
+                <hr>
+                <h4 style="font-size: 18px;">
+                    Note: We are not responsible for any thing left in vehicle
+                    Either take it with you or otherwise submit on counter
+                    Any vehicle will not exist from parking plaza without
+                    Submitting the receipt lost you will be charged Rs 100 fine
+                </h4>
+            </div>
+    </div>
+
+</body></html>

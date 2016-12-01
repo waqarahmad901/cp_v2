@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using CP_v2.DB;
 using CP_v2.Models;
+using CP_v2.Util;
 
 namespace CP_v2.Controllers
 {
-    [Authorize]
+    [AuthorizeUser(AccessLevel = "SuperAdmin")]
     public class PaymentController : Controller
     {
         // GET: Paymemt

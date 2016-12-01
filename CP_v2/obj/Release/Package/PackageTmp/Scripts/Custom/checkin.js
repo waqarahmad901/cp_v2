@@ -21,22 +21,36 @@ angular.module('carApp', [])
           return input;
       };
       var isCarFound = false;
+      var oldToken = '';
+
+      function clearToken()
+      {
+          $scope.out_token_no = "";
+          clearTimeout(clearToken,0);
+      }
+
       $scope.checkoutTokenInfo = function (keyEvent) {
-          if (keyEvent.which === 27) {
-              $scope.out_token_no = '';
-          }
+        //  debugger;
+          //if (keyEvent.which === 27 || keyEvent.keyCode === 27)
+          //{ 
+          //    $scope.checkout = new Object();
+          //    $scope.checkout.time = "00 Hours 00 Minutes";
+          //    $scope.checkout.totalAmount = "0.00";
+          //    $scope.checkout.isPaid = true;
+          //    $scope.checkout.isMonthly = false;
+
+          //    setTimeout(clearToken, 0);
+           
+          //}
           if (keyEvent.which === 13)
-          {
-              
+          { 
               var data = {
-                  token_no: $scope.out_token_no
-                  
+                  token_no: $scope.out_token_no 
               };
               var config = {
                   params: data,
                   headers: { 'Accept': 'application/json' }
-              };
-
+              }; 
               $http.get(rootUrl + "Home/GetCheckoutTokenInfo", config)
                    .then(function (response) {
                        if (response.data == "null")
@@ -44,12 +58,15 @@ angular.module('carApp', [])
                        else {
                            isCarFound = true;
                            $scope.checkout = response.data;
-                           if ($scope.checkout.isPaid)
-                               $scope.out_token_no = '';
+                           oldToken = $scope.out_token_no;
+                           if ($scope.checkout.isPaid || $scope.checkout.isMonthly) {
+                               $scope.checkout.time = "00 Hours 00 Minutes";
+                               $scope.checkout.totalAmount = "0.00";
+                           }
                        }
                    });
 
-              if (isCarFound)
+              if (isCarFound && oldToken == $scope.out_token_no)
               {
                   $scope.checkoutClick($scope.checkout);
                   isCarFound = false;
@@ -113,11 +130,28 @@ angular.module('carApp', [])
           
 
       }
+
+      function GetParkedCarCount()
+      {
+          console.log("tedst");
+          $http.get(rootUrl + "Home/GetTotalCarCount")
+             .then(function (response) {
+                
+                 $scope.carTable.TotalParkedCars = response.data;
+             });
+
+      }
+
+      setInterval(GetParkedCarCount, 10000);
+
+
       $scope.clearControls = function () {
           $scope.veh_no = $scope.token_no = "";
           $scope.pageClick(1);
 
       }
+
+      
    
       $scope.printToken = function () {
           var data = {
@@ -137,7 +171,14 @@ angular.module('carApp', [])
                    $scope.token_no_current = response.data.token;
                    $("#carimg").attr("src", rootUrl +"images/car-img.jpg");
                    $scope.veh_no_token = "";
-                   makePDF(response.data);
+                   $('#loaderFrame').attr('src', 'print.html?car=' + response.data.car_no + "&token=" + response.data.token + "&night=" + response.data.nightly + "&date=" + response.data.parkin_date + ' ' + response.data.parkin_time);
+                   $('#loaderFrame').load(function () {
+                       var w = (this.contentWindow || this.contentDocument.defaultView);
+                       w.print();
+                   });
+
+                  // $("#recipt").printThis();
+                 //  makePDF(response.data);
                    $scope.pageClick(1);
                });
       }
@@ -153,8 +194,13 @@ angular.module('carApp', [])
           };
           $http.get(rootUrl + "Home/RePrintTokenForCar", config)
                .then(function (response) {
-                   if (response.data)
-                       makePDF(response.data);
+                   if (response.data) {
+                       $('#loaderFrame').attr('src', 'print.html?car=' + response.data.car_no + "&token=" + response.data.token + "&night=" + response.data.nightly + "&date=" + response.data.parkin_date + ' ' + response.data.parkin_time);
+                       $('#loaderFrame').load(function () {
+                           var w = (this.contentWindow || this.contentDocument.defaultView);
+                           w.print();
+                       });
+                   }
                });
       }
       $scope.pageClick(1);

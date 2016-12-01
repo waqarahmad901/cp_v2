@@ -4,28 +4,30 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fcd4e2b9c3f448aeb25da681dc4f4da4" Name="Diagram1">
-        <EntityTypeShape EntityType="car_parkingModel.ap_user" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.dur_amount" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.duration" Width="1.5" PointX="5.75" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.duration_charges" Width="1.5" PointX="8" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.monthly_reg" Width="1.5" PointX="7.75" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.parked_car" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.parkedcar_viewlog" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.sysdiagram" Width="1.5" PointX="5.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.system_configs" Width="1.5" PointX="7.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.user_daycount" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.veh_type" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="car_parkingModel.View_1" Width="1.5" PointX="9.75" PointY="5.625" IsExpanded="true" />
+      <Diagram DiagramId="f1afc999de434ee0aa7a3a5803f00938" Name="Diagram1">
+        <EntityTypeShape EntityType="car_parkingModel.ap_role" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.ap_user" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.dur_amount" Width="1.5" PointX="5.25" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.duration" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.duration_charges" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.monthly_reg" Width="1.5" PointX="7.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.parked_car" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.parkedcar_viewlog" Width="1.5" PointX="7.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.payment" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.sysdiagram" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.system_configs" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.user_daycount" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.veh_type" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="car_parkingModel.View_1" Width="1.5" PointX="9.75" PointY="9.75" IsExpanded="true" />
+        <AssociationConnector Association="car_parkingModel.FK_ap_user_ap_role" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parked_car_ap_user" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parkedcar_viewlog_ap_user" ManuallyRouted="false" />
+        <AssociationConnector Association="car_parkingModel.FK_payment_ap_user" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_user_daycount_ap_user" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_dur_amount_veh_type" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_duration_charges_duration" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parked_car_veh_type" ManuallyRouted="false" />
         <AssociationConnector Association="car_parkingModel.FK_parkedcar_viewlog_parked_car" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="car_parkingModel.payment" Width="1.5" PointX="3" PointY="14.875" />
-        <AssociationConnector Association="car_parkingModel.FK_payment_ap_user" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

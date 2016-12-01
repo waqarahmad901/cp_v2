@@ -74,6 +74,7 @@ function makePDF(data) {
         ]
     }
 
-    var filename = "test.pdf";
     pdfMake.createPdf(docDefinition).print();
+   
+    
 }

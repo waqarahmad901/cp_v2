@@ -15,10 +15,10 @@ namespace CP_v2.DB
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class car_parkingEntities : DbContext
+    public partial class car_parkingEntities1 : DbContext
     {
-        public car_parkingEntities()
-            : base("name=car_parkingEntities")
+        public car_parkingEntities1()
+            : base("name=car_parkingEntities1")
         {
         }
     
@@ -27,6 +27,7 @@ namespace CP_v2.DB
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ap_role> ap_role { get; set; }
         public virtual DbSet<ap_user> ap_user { get; set; }
         public virtual DbSet<dur_amount> dur_amount { get; set; }
         public virtual DbSet<duration> durations { get; set; }
@@ -34,12 +35,12 @@ namespace CP_v2.DB
         public virtual DbSet<monthly_reg> monthly_reg { get; set; }
         public virtual DbSet<parked_car> parked_car { get; set; }
         public virtual DbSet<parkedcar_viewlog> parkedcar_viewlog { get; set; }
+        public virtual DbSet<payment> payments { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<system_configs> system_configs { get; set; }
         public virtual DbSet<user_daycount> user_daycount { get; set; }
         public virtual DbSet<veh_type> veh_type { get; set; }
         public virtual DbSet<View_1> View_1 { get; set; }
-        public virtual DbSet<payment> payments { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

@@ -13,6 +13,7 @@
         <th>Vehicle No</th>
         <th>Checkin Time</th>
         <th>Checkout Time</th>
+        <th>Checkoutby</th>
         <th>Duration</th>
         <th>Amount</th>
         <th>Monthly</th>
@@ -20,19 +21,21 @@
         <th>Received</th>
     </tr>
     <tr ng-repeat="car in carTable.Cars">
-        <td>{{car.tokenNo }}</td>
+        <td>{{car.tokenNo  }}</td>
         <td>{{car.vehicle_NO }}</td>
         <td>{{car.checkinTime }}</td>
         <td>{{car.checkouttimeString }}</td>
+        <td>{{car.checkOutBy }}</td>
         <td>{{car.Duration }}</td>
+     
         <td>{{car.Amount }}</td>
-        <td>{{car.monthly }}</td>
-        <td>{{car.night }}</td>
+        <td><img src="~/images/check-mark.png" alt="" ng-show="car.monthly" /></td>
+        <td><img src="~/images/check-mark.png" alt="" ng-show="car.night" /></td>
         <td><input type="submit" value="Reprint" ng-click="reprintToken(car.Id)" /></td>
     </tr>
 
     <tr>
-        <td colspan="9">
+        <td colspan="10">
             <div class="pagination">
                 <ul>
                     <li ng-click="pageClick(carTable.CurrentPage - 1)" ng-if="carTable.CurrentPage != 1"><a ng-if="carTable.CurrentPage != 1" >«</a></li>

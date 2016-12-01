@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="car_parkingModelStoreContainer" CdmEntityContainer="car_parkingEntities">
+  <EntityContainerMapping StorageEntityContainer="car_parkingModelStoreContainer" CdmEntityContainer="car_parkingEntities1">
+    <EntitySetMapping Name="ap_role">
+      <EntityTypeMapping TypeName="car_parkingModel.ap_role">
+        <MappingFragment StoreEntitySet="ap_role">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ap_user">
       <EntityTypeMapping TypeName="car_parkingModel.ap_user">
         <MappingFragment StoreEntitySet="ap_user">
@@ -16,6 +24,7 @@
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="role" ColumnName="role" />
           <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -66,8 +75,6 @@
     <EntitySetMapping Name="parked_car">
       <EntityTypeMapping TypeName="car_parkingModel.parked_car">
         <MappingFragment StoreEntitySet="parked_car">
-          <ScalarProperty Name="checkoutimage" ColumnName="checkoutimage" />
-          <ScalarProperty Name="checkinimage" ColumnName="checkinimage" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="car_no" ColumnName="car_no" />
           <ScalarProperty Name="veh_type" ColumnName="veh_type" />
@@ -85,6 +92,8 @@
           <ScalarProperty Name="out_by" ColumnName="out_by" />
           <ScalarProperty Name="is_nightly" ColumnName="is_nightly" />
           <ScalarProperty Name="is_updateby_admin" ColumnName="is_updateby_admin" />
+          <ScalarProperty Name="checkinimage" ColumnName="checkinimage" />
+          <ScalarProperty Name="checkoutimage" ColumnName="checkoutimage" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -95,6 +104,17 @@
           <ScalarProperty Name="parked_car_id" ColumnName="parked_car_id" />
           <ScalarProperty Name="date_viewed" ColumnName="date_viewed" />
           <ScalarProperty Name="viewed_by" ColumnName="viewed_by" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="payments">
+      <EntityTypeMapping TypeName="car_parkingModel.payment">
+        <MappingFragment StoreEntitySet="payment">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="received_date" ColumnName="received_date" />
+          <ScalarProperty Name="payment_type" ColumnName="payment_type" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -181,16 +201,5 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="car_parkingModel.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="car_parkingModel.Store.sp_upgraddiagrams" />
-    <EntitySetMapping Name="payments">
-      <EntityTypeMapping TypeName="car_parkingModel.payment">
-        <MappingFragment StoreEntitySet="payment">
-          <ScalarProperty Name="payment_type" ColumnName="payment_type" />
-          <ScalarProperty Name="received_date" ColumnName="received_date" />
-          <ScalarProperty Name="amount" ColumnName="amount" />
-          <ScalarProperty Name="userid" ColumnName="userid" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

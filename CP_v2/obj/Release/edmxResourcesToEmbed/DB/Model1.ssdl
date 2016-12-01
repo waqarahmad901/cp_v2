@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="car_parkingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ap_role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="ap_user">
     <Key>
       <PropertyRef Name="id" />
@@ -16,6 +23,7 @@
     <Property Name="password" Type="nvarchar" MaxLength="50" />
     <Property Name="role" Type="nvarchar" MaxLength="50" />
     <Property Name="username" Type="nvarchar" MaxLength="50" />
+    <Property Name="RoleId" Type="int" />
   </EntityType>
   <EntityType Name="dur_amount">
     <Key>
@@ -156,6 +164,18 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
     <Property Name="out_by" Type="uniqueidentifier" />
     <Property Name="assigned_no" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <Association Name="FK_ap_user_ap_role">
+    <End Role="ap_role" Type="Self.ap_role" Multiplicity="0..1" />
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ap_user">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_dur_amount_veh_type">
     <End Role="veh_type" Type="Self.veh_type" Multiplicity="0..1" />
     <End Role="dur_amount" Type="Self.dur_amount" Multiplicity="*" />
@@ -284,6 +304,7 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="car_parkingModelStoreContainer">
+    <EntitySet Name="ap_role" EntityType="Self.ap_role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ap_user" EntityType="Self.ap_user" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dur_amount" EntityType="Self.dur_amount" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="duration" EntityType="Self.duration" Schema="dbo" store:Type="Tables" />
@@ -314,6 +335,10 @@ warning 6002: The table/view 'car_parking.dbo.View_1' does not have a primary ke
     [View_1].[assigned_no] AS [assigned_no]
     FROM [dbo].[View_1] AS [View_1]</DefiningQuery>
     </EntitySet>
+    <AssociationSet Name="FK_ap_user_ap_role" Association="Self.FK_ap_user_ap_role">
+      <End Role="ap_role" EntitySet="ap_role" />
+      <End Role="ap_user" EntitySet="ap_user" />
+    </AssociationSet>
     <AssociationSet Name="FK_dur_amount_veh_type" Association="Self.FK_dur_amount_veh_type">
       <End Role="veh_type" EntitySet="veh_type" />
       <End Role="dur_amount" EntitySet="dur_amount" />

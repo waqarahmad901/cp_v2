@@ -9,15 +9,16 @@
     <script src="~/Scripts/pdfmake.min.js"></script>
     <script src="~/Scripts/vfs_fonts.js"></script>
     <script src="~/Scripts/Custom/util.js"></script>
-
+    @{var date = DateTime.Now; }
     <script type="text/javascript">
         var rootUrl = '@Url.Content("~/")';
+        
         function GetClock() {
             var d = new Date();
-
+         
             if (nyear < 1000) nyear += 1900;
-            var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
-            var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
+            var nhour = @date.Hour, nmin = @date.Minute, nsec = @date.Second, ap;
+            var nday = @date.Day, nmonth = @date.Month, ndate = d.getDate(), nyear = @date.Year;
             if (nhour == 0) { ap = " AM"; nhour = 12; }
             else if (nhour < 12) { ap = " AM"; }
             else if (nhour == 12) { ap = " PM"; }
@@ -46,6 +47,14 @@
             window.open('@Url.Content("~/Photo/Index/")', "wndPopUp", 'width=720,height=400,left=100,top=100,resizable=no');
 
         }
+
+        @{ 
+            CP_v2.DB.ap_user user = (CP_v2.DB.ap_user)Session["User"];
+            if (user == null)
+            {
+                Response.Redirect("/Account/Login");
+            }
+        }
     </script>
 
 
@@ -53,8 +62,8 @@
 <body>
     <div class="container">
         <div class="head-login text-left">
-            <div class="head-login-title">Raja Zahid Latif Contractor</div>
-            <div class="slogan">slogan comes here. slogan comes here.</div>
+            <div class="head-login-title">HRZL &amp; CO</div>
+           @* <div class="slogan">slogan comes here. slogan comes here.</div>*@
         </div>
         <div class="user">
             <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
@@ -68,11 +77,20 @@
     <div class="nav">
         <div class="container">
             <ul>
-                <li><a class="active" href="@Url.Action("Index","Home")">Checkin</a></li>
+                @if (user != null && (user.ap_role.Title.Equals("SuperAdmin") || user.ap_role.Title.Equals("CheckIn")))
+                {
+                     <li><a class="active" href="@Url.Action("Index", "Home")">Checkin</a></li>
+                }
+                @if (user != null && (user.ap_role.Title.Equals("SuperAdmin") || user.ap_role.Title.Equals("CheckOut")))
+                {
                 <li><a href="@Url.Action("Checkout", "Home")">Checkout</a></li>
+                }
+                @if (user != null && (user.ap_role.Title.Equals("SuperAdmin"))){ 
                 <li><a href="@Url.Action("Index", "Payment")">Payment</a></li>
                 <li><a href="@Url.Action("Index", "MonthlySubscription")">Monthly Subscription</a></li>
                 <li><a href="@Url.Action("Index", "UserReport")">Report</a></li>
+                <li><a href="@Url.Action("AllCars", "UserReport")">All Cars Report</a></li>
+                }
             </ul>
         </div>
     </div>

@@ -17,7 +17,7 @@
     <AssemblyName>CP_v2</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -174,13 +174,9 @@
     <Compile Include="Controllers\MonthlySubscriptionController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\UserReportController.cs" />
-    <Compile Include="DB\payment.cs">
+    <Compile Include="DB\ap_role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CheckoutModel.cs" />
-    <Compile Include="Models\ParkedCars.cs" />
-    <Compile Include="Controllers\PhotoController.cs" />
-    <Compile Include="DataClass.cs" />
     <Compile Include="DB\ap_user.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -217,6 +213,9 @@
     <Compile Include="DB\parked_car.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB\payment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -238,6 +237,11 @@
     <Compile Include="DB\View_1.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CheckoutModel.cs" />
+    <Compile Include="Models\DailyCashModel.cs" />
+    <Compile Include="Models\ParkedCars.cs" />
+    <Compile Include="Controllers\PhotoController.cs" />
+    <Compile Include="DataClass.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,7 +249,7 @@
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\DailyCahTable.cs" />
     <Compile Include="Models\SubscriptionModel.cs" />
     <Compile Include="Models\SubscriptionTableModel.cs" />
     <Compile Include="Models\PaymentTableModel.cs" />
@@ -254,6 +258,7 @@
     <Compile Include="PrintTicket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Util\AuthorizeUserAttribute.cs" />
     <Compile Include="Util\JqGrid.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +288,7 @@
     <Content Include="images\main-bg.jpg" />
     <Content Include="images\print-report.png" />
     <Content Include="images\user-img.jpg" />
+    <Content Include="print.html" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -295,6 +301,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\bb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Custom\allCars.js" />
     <Content Include="Scripts\Custom\checkin.js" />
     <Content Include="Scripts\Custom\MonthlySubscription.js" />
     <Content Include="Scripts\Custom\report.js" />
@@ -314,6 +321,7 @@
     <Content Include="Scripts\jscam_canvas_only.swf" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\pdfmake.min.js" />
+    <Content Include="Scripts\printThis.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\vfs_fonts.js" />
@@ -342,6 +350,7 @@
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\MonthlySubscription\Index.cshtml" />
     <Content Include="Views\UserReport\Index.cshtml" />
+    <Content Include="Views\UserReport\AllCars.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -376,7 +385,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>20033</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:20033/</IISUrl>
+          <IISUrl>http://localhost/CP_v2</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

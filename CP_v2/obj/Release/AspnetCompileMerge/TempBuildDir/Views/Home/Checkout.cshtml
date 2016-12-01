@@ -3,7 +3,7 @@
 
 <div class="container" ng-controller="checkincontroller">
     <div class="price-list">
-        <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
+        <div class="price-circle no-margin">@Model.hour <sup>PKR</sup><span>Per Hour</span></div>
         <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
         @*<div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
         <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>*@
@@ -22,10 +22,14 @@
                         <input type="hidden" id="vehimage" value="@ViewBag.pic" />
 
                         <p class="no">
-                            <input type="text" ng-model="out_token_no" ng-keypress="checkoutTokenInfo($event)" placeholder="Enter Car No OR Token No" required  style="text-transform:uppercase; font-size:20px; height:50px"/>
+                            <input type="text" ng-model="out_token_no" id="outtoken" ng-keydown="checkoutTokenInfo($event)" placeholder="Enter Car No OR Token No" required  style="text-transform:uppercase; font-size:20px; height:50px"/>
                         </p>
                         <div class="token">
                             <div class="checkin-detail">
+                                <div class="bold">Checkin Time</div>
+                                <div class="normal">{{checkout.checkinTime}}</div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
                                 <div class="bold">Total time</div>
                                 <div class="normal">{{checkout.time}}</div>
                                 <div class="clear"></div>
@@ -38,8 +42,12 @@
                                 <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isMonthly"/></div>
                                 <div class="clear"></div>
                                 <div class="gray-sprtr"></div>
-                                <div class="bold">Paid</div> 
-                                <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isPaid"/></div>
+                                <div class="bold">Paid</div>
+                                <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isPaid" /></div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
+                                <div class="bold">Night</div>
+                                <div class="normal"><img src="~/images/check-mark.png" alt="" ng-show="checkout.isNight" /></div>
                             </div>
                             <div class="submit width">
                                 <input type="button" value="Check Out" id="submit-button" ng-click="checkoutClick(checkout)" />

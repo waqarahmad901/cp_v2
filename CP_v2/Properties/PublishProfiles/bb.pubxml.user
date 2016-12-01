@@ -13,13 +13,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>11/22/2016 18:14:19</publishTime>
+      <publishTime>11/30/2016 15:19:12</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>11/22/2016 18:14:19</publishTime>
+      <publishTime>11/30/2016 15:19:11</publishTime>
     </File>
     <File Include="bin/CP_v2.dll">
-      <publishTime>11/22/2016 18:14:04</publishTime>
+      <publishTime>11/30/2016 15:18:56</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 09:32:26</publishTime>
@@ -151,7 +151,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/12/2016 13:44:20</publishTime>
     </File>
     <File Include="DB/Model1.edmx.diagram">
-      <publishTime>08/12/2016 13:41:13</publishTime>
+      <publishTime>11/24/2016 16:59:48</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>08/02/2016 21:17:35</publishTime>
@@ -202,7 +202,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2016 21:18:04</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>11/22/2016 18:14:12</publishTime>
+      <publishTime>11/30/2016 15:19:02</publishTime>
+    </File>
+    <File Include="print.html">
+      <publishTime>11/27/2016 16:20:53</publishTime>
     </File>
     <File Include="Scripts/angular.min.js">
       <publishTime>08/07/2016 10:19:25</publishTime>
@@ -213,8 +216,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/bootstrap.min.js">
       <publishTime>08/02/2016 21:17:42</publishTime>
     </File>
+    <File Include="Scripts/Custom/allCars.js">
+      <publishTime>11/30/2016 12:58:24</publishTime>
+    </File>
     <File Include="Scripts/Custom/checkin.js">
-      <publishTime>11/22/2016 15:25:05</publishTime>
+      <publishTime>11/30/2016 12:09:03</publishTime>
     </File>
     <File Include="Scripts/Custom/MonthlySubscription.js">
       <publishTime>11/19/2016 09:59:00</publishTime>
@@ -223,10 +229,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2016 21:55:48</publishTime>
     </File>
     <File Include="Scripts/Custom/report.js">
-      <publishTime>11/20/2016 16:23:46</publishTime>
+      <publishTime>11/24/2016 11:54:20</publishTime>
     </File>
     <File Include="Scripts/Custom/util.js">
-      <publishTime>11/22/2016 16:55:12</publishTime>
+      <publishTime>11/23/2016 09:47:32</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>08/02/2016 21:17:43</publishTime>
@@ -267,6 +273,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/pdfmake.min.js">
       <publishTime>08/12/2016 21:49:27</publishTime>
     </File>
+    <File Include="Scripts/printThis.js">
+      <publishTime>11/24/2016 15:54:30</publishTime>
+    </File>
     <File Include="Scripts/respond.js">
       <publishTime>08/02/2016 21:17:52</publishTime>
     </File>
@@ -277,10 +286,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/12/2016 21:49:27</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>11/22/2016 16:25:35</publishTime>
+      <publishTime>11/30/2016 10:20:32</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>08/06/2016 11:23:28</publishTime>
+      <publishTime>11/27/2016 16:51:17</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
       <publishTime>08/02/2016 21:17:55</publishTime>
@@ -289,19 +298,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2016 21:17:35</publishTime>
     </File>
     <File Include="Views/Home/Checkout.cshtml">
-      <publishTime>11/22/2016 18:06:31</publishTime>
+      <publishTime>11/27/2016 12:59:04</publishTime>
     </File>
     <File Include="Views/Home/Contact.cshtml">
       <publishTime>08/02/2016 21:17:35</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>11/22/2016 18:13:15</publishTime>
+      <publishTime>11/27/2016 16:34:17</publishTime>
     </File>
     <File Include="Views/Home/_CarParkingTable.cshtml">
-      <publishTime>11/22/2016 15:51:15</publishTime>
+      <publishTime>11/27/2016 16:31:44</publishTime>
     </File>
     <File Include="Views/MonthlySubscription/Index.cshtml">
-      <publishTime>11/22/2016 15:56:25</publishTime>
+      <publishTime>11/30/2016 15:17:31</publishTime>
     </File>
     <File Include="Views/Payment/Index.cshtml">
       <publishTime>09/26/2016 21:55:36</publishTime>
@@ -316,13 +325,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2016 21:17:55</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/20/2016 16:21:56</publishTime>
+      <publishTime>11/30/2016 10:05:07</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>08/02/2016 21:17:55</publishTime>
     </File>
+    <File Include="Views/UserReport/AllCars.cshtml">
+      <publishTime>11/30/2016 12:36:20</publishTime>
+    </File>
     <File Include="Views/UserReport/Index.cshtml">
-      <publishTime>11/22/2016 17:01:37</publishTime>
+      <publishTime>11/30/2016 15:14:51</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/02/2016 21:17:35</publishTime>
@@ -331,7 +343,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/02/2016 21:17:35</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/22/2016 12:27:54</publishTime>
+      <publishTime>11/25/2016 17:28:44</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CP_v2.Models
 {
-    public class ReportModel
+    public class DailyCahTable
     {
         public double? totalAmount { get; set; }
         public string user { get; set;}

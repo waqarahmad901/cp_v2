@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="car_parkingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ap_role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ap_user" Relationship="Self.FK_ap_user_ap_role" FromRole="ap_role" ToRole="ap_user" />
+  </EntityType>
   <EntityType Name="ap_user">
     <Key>
       <PropertyRef Name="id" />
@@ -16,10 +24,12 @@
     <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RoleId" Type="Int32" />
+    <NavigationProperty Name="ap_role" Relationship="Self.FK_ap_user_ap_role" FromRole="ap_user" ToRole="ap_role" />
     <NavigationProperty Name="parked_car" Relationship="Self.FK_parked_car_ap_user" FromRole="ap_user" ToRole="parked_car" />
     <NavigationProperty Name="parkedcar_viewlog" Relationship="Self.FK_parkedcar_viewlog_ap_user" FromRole="ap_user" ToRole="parkedcar_viewlog" />
+    <NavigationProperty Name="payments" Relationship="Self.FK_payment_ap_user" FromRole="ap_user" ToRole="payment" />
     <NavigationProperty Name="user_daycount" Relationship="Self.FK_user_daycount_ap_user" FromRole="ap_user" ToRole="user_daycount" />
-    <NavigationProperty Name="payments" Relationship="car_parkingModel.FK_payment_ap_user" FromRole="ap_user" ToRole="payment" />
   </EntityType>
   <EntityType Name="dur_amount">
     <Key>
@@ -85,11 +95,11 @@
     <Property Name="out_by" Type="Guid" />
     <Property Name="is_nightly" Type="Boolean" />
     <Property Name="is_updateby_admin" Type="Boolean" />
+    <Property Name="checkinimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="checkoutimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ap_user" Relationship="Self.FK_parked_car_ap_user" FromRole="parked_car" ToRole="ap_user" />
     <NavigationProperty Name="veh_type1" Relationship="Self.FK_parked_car_veh_type" FromRole="parked_car" ToRole="veh_type" />
     <NavigationProperty Name="parkedcar_viewlog" Relationship="Self.FK_parkedcar_viewlog_parked_car" FromRole="parked_car" ToRole="parkedcar_viewlog" />
-    <Property Name="checkinimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="checkoutimage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="parkedcar_viewlog">
     <Key>
@@ -101,6 +111,17 @@
     <Property Name="viewed_by" Type="Guid" />
     <NavigationProperty Name="ap_user" Relationship="Self.FK_parkedcar_viewlog_ap_user" FromRole="parkedcar_viewlog" ToRole="ap_user" />
     <NavigationProperty Name="parked_car" Relationship="Self.FK_parkedcar_viewlog_parked_car" FromRole="parkedcar_viewlog" ToRole="parked_car" />
+  </EntityType>
+  <EntityType Name="payment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="userid" Type="Guid" Nullable="false" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="received_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="payment_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ap_user" Relationship="Self.FK_payment_ap_user" FromRole="payment" ToRole="ap_user" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
@@ -159,6 +180,18 @@
     <Property Name="out_by" Type="Guid" />
     <Property Name="assigned_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
+  <Association Name="FK_ap_user_ap_role">
+    <End Role="ap_role" Type="Self.ap_role" Multiplicity="0..1" />
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ap_user">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_parked_car_ap_user">
     <End Role="ap_user" Type="Self.ap_user" Multiplicity="0..1" />
     <End Role="parked_car" Type="Self.parked_car" Multiplicity="*" />
@@ -180,6 +213,18 @@
       </Principal>
       <Dependent Role="parkedcar_viewlog">
         <PropertyRef Name="viewed_by" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_payment_ap_user">
+    <End Role="ap_user" Type="Self.ap_user" Multiplicity="1" />
+    <End Role="payment" Type="Self.payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ap_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="payment">
+        <PropertyRef Name="userid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -243,7 +288,8 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="car_parkingEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="car_parkingEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ap_role" EntityType="Self.ap_role" />
     <EntitySet Name="ap_user" EntityType="Self.ap_user" />
     <EntitySet Name="dur_amount" EntityType="Self.dur_amount" />
     <EntitySet Name="durations" EntityType="Self.duration" />
@@ -251,11 +297,16 @@
     <EntitySet Name="monthly_reg" EntityType="Self.monthly_reg" />
     <EntitySet Name="parked_car" EntityType="Self.parked_car" />
     <EntitySet Name="parkedcar_viewlog" EntityType="Self.parkedcar_viewlog" />
+    <EntitySet Name="payments" EntityType="Self.payment" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="system_configs" EntityType="Self.system_configs" />
     <EntitySet Name="user_daycount" EntityType="Self.user_daycount" />
     <EntitySet Name="veh_type" EntityType="Self.veh_type" />
     <EntitySet Name="View_1" EntityType="Self.View_1" />
+    <AssociationSet Name="FK_ap_user_ap_role" Association="Self.FK_ap_user_ap_role">
+      <End Role="ap_role" EntitySet="ap_role" />
+      <End Role="ap_user" EntitySet="ap_user" />
+    </AssociationSet>
     <AssociationSet Name="FK_parked_car_ap_user" Association="Self.FK_parked_car_ap_user">
       <End Role="ap_user" EntitySet="ap_user" />
       <End Role="parked_car" EntitySet="parked_car" />
@@ -263,6 +314,10 @@
     <AssociationSet Name="FK_parkedcar_viewlog_ap_user" Association="Self.FK_parkedcar_viewlog_ap_user">
       <End Role="ap_user" EntitySet="ap_user" />
       <End Role="parkedcar_viewlog" EntitySet="parkedcar_viewlog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_payment_ap_user" Association="Self.FK_payment_ap_user">
+      <End Role="ap_user" EntitySet="ap_user" />
+      <End Role="payment" EntitySet="payments" />
     </AssociationSet>
     <AssociationSet Name="FK_user_daycount_ap_user" Association="Self.FK_user_daycount_ap_user">
       <End Role="ap_user" EntitySet="ap_user" />
@@ -314,11 +369,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <EntitySet Name="payments" EntityType="car_parkingModel.payment" />
-    <AssociationSet Name="FK_payment_ap_user" Association="car_parkingModel.FK_payment_ap_user">
-      <End Role="ap_user" EntitySet="ap_user" />
-      <End Role="payment" EntitySet="payments" />
-    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />
@@ -331,27 +381,4 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
-  <EntityType Name="payment">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Guid" Nullable="false" />
-    <Property Name="userid" Type="Guid" Nullable="false" />
-    <Property Name="amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-    <Property Name="received_date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="payment_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="ap_user" Relationship="car_parkingModel.FK_payment_ap_user" FromRole="payment" ToRole="ap_user" />
-  </EntityType>
-  <Association Name="FK_payment_ap_user">
-    <End Type="car_parkingModel.ap_user" Role="ap_user" Multiplicity="1" />
-    <End Type="car_parkingModel.payment" Role="payment" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ap_user">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="payment">
-        <PropertyRef Name="userid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using CP_v2.DB;
@@ -10,42 +11,130 @@ namespace CP_v2
 {
     public class DataClass
     {   
-        car_parkingEntities _context = new car_parkingEntities();  
+        car_parkingEntities1 _context = new car_parkingEntities1();  
         public ap_user VerifyUserLogin(string userName, string password)
         {  
             return _context.ap_user.Where(x => x.username == userName && x.password == password).FirstOrDefault();
 
         }
 
-        public object GetUserReport(string fromdate, string to)
+        public List<DailyCashModel> GetUserReport(string fromdate, string to)
         {
-            DateTime fromDate = new DateTime(), toDate= new DateTime();
-            if (!string.IsNullOrEmpty(fromdate))
-                fromDate = DateTime.ParseExact(fromdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(to))
+            try
+            {
+                DateTime fromDate = new DateTime();
+                if (!string.IsNullOrEmpty(fromdate))
+                    fromDate = DateTime.ParseExact(fromdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime shif1From = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 8, 0, 0);
+                DateTime shift1To = shif1From.AddHours(12);
 
-               toDate = DateTime.ParseExact(to, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
+                DateTime shif2From = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 20, 0, 0);
+                DateTime shift2To = shif2From.AddHours(12);
 
-            var results = (from a in _context.parked_car
-                           where (fromdate == null || a.date_created >= fromDate)
-                           && (to == null || a.date_created < toDate)
-                           group a by a.ap_user
-                           );
+                List<DailyCashModel> listModel = new List<DailyCashModel>();
+                DailyCashModel model = new DailyCashModel();
 
-            var final = (from r in results
-                         select new ReportModel{
-                             totalAmount = r.Sum(x => x.charged_amount),
-                             user = r.FirstOrDefault().ap_user.username,
-                             totalParkedIn = r.Sum(x => x.parkin_time == null ? 0 : 1),
-                             totalParkedOut = r.Sum(x => x.parkout_time == null ? 0 : 1),
-                             parkedin = r.Min(x=>x.parkin_time).Value,
-                             parkedOut = r.Max(x=>x.parkout_time).Value,
+                var resultsIn = (from a in _context.parked_car
+                                 where a.parkout_time >= shif1From && a.parkout_time <= shift1To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                                 group a by a.out_by
+                               ).ToList();
 
-                         }
-                         ).ToList();
-            
+                var finalIn = (from r in resultsIn
+                               select new DailyCahTable
+                               {
+                                   totalAmount = r.Sum(x => x.charged_amount),
+                                   user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
+                                   totalParkedIn = 0,
+                                   totalParkedOut = r.Count()
+                               }).ToList();
 
-            return final;
+
+                var resultsOut = (from a in _context.parked_car
+                                  where a.parkin_time >= shif1From && a.parkin_time <= shift1To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                                  group a by a.created_by
+                   ).ToList();
+
+                var finalOut = (from r in resultsOut
+                                select new DailyCahTable
+                                {
+                                    totalAmount = 0,
+                                    user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
+                                    totalParkedIn = r.Count(),
+                                    totalParkedOut = 0
+                                }).ToList();
+
+                model.shiftsTable.AddRange(finalIn.Union(finalOut));
+
+                model.FromTime = shif1From.ToString("dd-MM-yyyy hh:mm:ss tt");
+                model.ToTime = shift1To.ToString("dd-MM-yyyy hh:mm:ss tt");
+                listModel.Add(model);
+
+                model = new DailyCashModel();
+
+                resultsIn = (from a in _context.parked_car
+                             where a.parkout_time >= shif2From && a.parkout_time <= shift2To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                             group a by a.out_by
+                            ).ToList();
+
+                finalIn = (from r in resultsIn
+                           select new DailyCahTable
+                           {
+                               totalAmount = r.Sum(x => x.charged_amount),
+                               user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
+                               totalParkedIn = 0,
+                               totalParkedOut = r.Count()
+                           }).ToList();
+
+
+                resultsOut = (from a in _context.parked_car
+                              where a.parkin_time >= shif2From && a.parkin_time <= shift2To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                              group a by a.created_by
+                  ).ToList();
+
+                finalOut = (from r in resultsOut
+                            select new DailyCahTable
+                            {
+                                totalAmount = 0,
+                                user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
+                                totalParkedIn = r.Count(),
+                                totalParkedOut = 0
+                            }).ToList();
+
+                model.shiftsTable.AddRange(finalIn.Union(finalOut));
+
+                model.FromTime = shif2From.ToString("dd-MM-yyyy hh:mm:ss tt");
+                model.ToTime = shift2To.ToString("dd-MM-yyyy hh:mm:ss tt");
+                listModel.Add(model);
+
+                return listModel;
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("C:/cp.txt", ex.Message + ex.StackTrace);
+            }
+            return null;
+        }
+
+        public int CheckoutCars(string ids,Guid userId)
+        {
+            List<Guid> splittedGuids = ids.Substring(1).Split(',').Select(s => Guid.Parse(s)).ToList();
+            var carList = _context.parked_car.Where(x => splittedGuids.Contains(x.id)).ToList();
+         
+            foreach (var item in carList)
+            {
+                DateTime durationTime = new DateTime((DateTime.Now - item.parkin_time.Value).Ticks);
+                item.parked_duration = durationTime.ToString("dd") + " Days " + durationTime.ToString("HH") + " Hours " + durationTime.ToString("mm") + " Minutes ";
+            }
+            carList.ForEach(x => x.paid_amount = 0);
+            carList.ForEach(x => x.charged_amount = 0);
+            carList.ForEach(x => x.parkout_time = DateTime.Now);
+            carList.ForEach(x => x.out_by = userId);
+            return _context.SaveChanges();
+        }
+
+        public object GetAllCars(string from, string to)
+        {
+            throw new NotImplementedException();
         }
 
         public List<ap_user> GetAllUsers()
@@ -95,13 +184,14 @@ namespace CP_v2
             return _context.dur_amount.Where(x => x.veh_type.name.Equals("Car")).ToList();
         }
 
-        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no)
+        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no,int recordsPerPage,string parked)
         {
-            ParkedTableModel pt = new ParkedTableModel();
-            pt.TotalPages = 7;// _context.parked_car.Include("ap_user").OrderByDescending(x=>x.parkin_time).Count();
-            int recordsPerPage = 10;
+            ParkedTableModel pt = new ParkedTableModel(); 
+            var allUsers = _context.ap_user.ToList();
             long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no)? "0" : token_no);
-            pt.Cars = _context.parked_car.Where(x => (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower())) && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))).
+            var cars = _context.parked_car.Where(x => (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower()))
+            && (parked == "all" || x.parkout_time == null)
+            && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))).
                 OrderByDescending(x => x.parkin_time).Select(x =>
                 new ParkedCars
                 {
@@ -114,10 +204,13 @@ namespace CP_v2
                     Duration = x.parked_duration,
                     Amount = x.charged_amount,
                     monthly = x.is_monthly,
-                    night = x.is_nightly
+                    night = x.is_nightly,
+                    checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
 
                 }
-            ).Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
+            );
+            pt.Cars = cars.Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
+            pt.TotalPages = (cars.Count() / recordsPerPage) + 1;
             pt.CurrentPage = currentPage + 1;
             return pt;
 
@@ -157,7 +250,12 @@ namespace CP_v2
 
         public bool CheckCarRegisterInCurrentMonth(string veh_no)
         {
-            return _context.monthly_reg.Any(x => x.month_name == DateTime.Now.Month.ToString() && x.vehicle_no.ToLower().Equals(veh_no));
+            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month,05); 
+            var car = _context.monthly_reg.Where(x=> x.vehicle_no.ToLower().Equals(veh_no)).FirstOrDefault();
+            if (car == null)
+                return false;
+            DateTime carMonth = new DateTime(DateTime.Now.Year, int.Parse(car.month_name), DateTime.Now.Day);
+            return int.Parse(car.month_name) == DateTime.Now.Month || carMonth.AddMonths(1) <= endDate;
         }
 
         public parked_car GetParkedCarById(Guid id)
@@ -184,12 +282,9 @@ namespace CP_v2
         {
             long result = 0;
             bool token = long.TryParse(token_no,out result);
-            parked_car car = null;
-            if(token)
-                car = _context.parked_car.Where(x=> x.recript_no == result).OrderByDescending(x=>x.date_created).FirstOrDefault();
-            if(car == null)
-                car = _context.parked_car.Where(x => x.car_no.Contains(token_no)).OrderByDescending(x => x.date_created).FirstOrDefault();
+            parked_car car =   _context.parked_car.Where(x=> x.recript_no == result || x.car_no.Contains(token_no)).OrderByDescending(x=>x.date_created).FirstOrDefault();
             return car;
+            
         }
     }
 }

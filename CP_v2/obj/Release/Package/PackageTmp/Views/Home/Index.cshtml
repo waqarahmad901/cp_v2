@@ -1,10 +1,11 @@
 ﻿@model CP_v2.Models.HomeModel
-
+ 
+<script src="~/Scripts/printThis.js"></script>
 <script src="~/Scripts/Custom/checkin.js"></script> 
 
 <div class="container" ng-controller="checkincontroller">
     <div class="price-list">
-        <div class="price-circle no-margin">@Model.day <sup>PKR</sup><span>Daily Rate</span></div>
+        <div class="price-circle no-margin">@Model.hour <sup>PKR</sup><span>Per Hour</span></div>
         <div class="price-circle">@Model.Night <sup>PKR</sup><span>Night Rate</span></div>
         @*<div class="price-circle">@Model.week <sup>PKR</sup><span>Weekly Rate</span></div>
     <div class="price-circle">@Model.Month <sup>PKR</sup><span>Monthly Rate</span></div>*@
@@ -54,6 +55,9 @@
     </div>
     <div class="clear"></div>
     @Html.Partial("_CarParkingTable")
+
+    <iframe id="loaderFrame" style="display:none"></iframe>
+
     <div class="copyright">&copy; 2016. All Rights Reserved.</div>
 </div>
 

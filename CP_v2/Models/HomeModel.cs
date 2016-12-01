@@ -8,6 +8,7 @@ namespace CP_v2.Models
 {
     public class HomeModel
     {
+        public double hour { get; set; }
         public double day { get; set; }
         public double Night { get; set; }
         public double week { get; set; }

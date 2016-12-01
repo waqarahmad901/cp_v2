@@ -35,11 +35,12 @@ namespace CP_v2.Controllers
             DataClass da = new DataClass();
             ap_user user = da.VerifyUserLogin(UserName, Password);
             ViewBag.IsLogin = user != null;
-
+            Session["User"] = user;
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(UserName, true);
-
+                if(user.ap_role.Title.Equals("CheckOut"))
+                    return RedirectToAction("CheckOut", "Home");
                 return RedirectToAction("Index", "Home");
             }
             
