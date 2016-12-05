@@ -17,6 +17,9 @@ namespace CP_v2.Models
         public String checkinTime { get; set; }
 
         public int parkinCars { get; set; }
+        public string carNo { get; set; }
+        public long tokenNo{ get; set; }
+
 
     }
 }
