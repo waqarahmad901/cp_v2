@@ -200,9 +200,10 @@ namespace CP_v2.Controllers
                 }
 
             }
-            var DayRate = da.GetRateListByType(car.veh_type.Value).Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault();
-            var hoursRate = da.GetRateListByType(car.veh_type.Value).Where(x => x.duration_time.Equals("Hour")).Select(x => x.amount_to_charge).FirstOrDefault();
-            var nightRate = da.GetRateListByType(car.veh_type.Value).Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
+            var rateList = da.GetRateListByType(car.veh_type.Value);
+            var DayRate = rateList.Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault();
+            var hoursRate = rateList.Where(x => x.duration_time.Equals("Hour")).Select(x => x.amount_to_charge).FirstOrDefault();
+            var nightRate = rateList.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
             int hours = duration.Hour;
             int minutesRate = 0;
             for (int i = 0; i < rates.Length; i++)
@@ -235,7 +236,7 @@ namespace CP_v2.Controllers
             car.parkout_time = DateTime.Now;
             DateTime durationTime = new DateTime((DateTime.Now - car.parkin_time.Value).Ticks);
             CheckoutModel cm = new CheckoutModel();
-            car.parked_duration = durationTime.ToString("dd") + " Days " + durationTime.ToString("HH") + " Hours " + durationTime.ToString("mm") + " Minutes "; 
+            car.parked_duration = (durationTime.Day -1) + " Days " + durationTime.ToString("HH") + " Hours " + durationTime.ToString("mm") + " Minutes "; 
             car.out_by = da.GetUserByUserName(User.Identity.Name).id;
             car.checkoutimage = vehimage;
 

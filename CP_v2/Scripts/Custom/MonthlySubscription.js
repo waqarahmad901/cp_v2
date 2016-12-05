@@ -3,6 +3,7 @@
 
 angular.module('carApp', [])
   .controller('monthlySubscriptionController', function ($scope, $http) {
+      $scope.currentEdit = "";
       $scope.getSubscriptions = function (carno,name) {
           var data = {
               carno : carno,
@@ -17,8 +18,50 @@ angular.module('carApp', [])
                 $scope.subscriptionTable = response.data;
             });
       }
+      $scope.delete = function (id) {
+          if (!confirm("Are you sured you want top delete this car"))
+              return;
+          var data = {
+              id : id
+          };
+          var config = {
+              params: data,
+              headers: { 'Accept': 'application/json' }
+          };
+          $http.get(rootUrl + "MonthlySubscription/DeleteSubcriptionbyId", config)
+            .then(function (response) {
+                $scope.getSubscriptions("", "");
 
 
+            });
+          
+      }
+      $scope.edit = function (id)
+      {
+          $scope.currentEdit = id;
+          var data = {
+              id : id
+          };
+          var config = {
+              params: data,
+              headers: { 'Accept': 'application/json' }
+          };
+          $http.get(rootUrl + "MonthlySubscription/GetSubcriptionbyId", config)
+            .then(function (response) {
+                $scope.carbike = response.data.carno;
+                $scope.cnic = response.data.cninc;
+                $scope.mobilenumber = response.data.mobileno;
+                $scope.amount = response.data.amount;
+                $scope.month = response.data.month;
+                $scope.ownername = response.data.ownername;
+            });
+      }
+      $scope.clear = function ()
+      {
+          $scope.carnosearch = "";
+          $scope.ownernamesearch = "";
+          $scope.getSubscriptions("", "");
+      }
       $scope.range = function (min, max, step) {
           step = step || 1;
           var input = [];
@@ -30,6 +73,7 @@ angular.module('carApp', [])
 
       $scope.addSubscription = function () {
           var data = {
+              id :   $scope.currentEdit,
               carbike: $scope.carbike,
               cnic: $scope.cnic,
               mobilenumber: $scope.mobilenumber,
@@ -45,11 +89,19 @@ angular.module('carApp', [])
 
           $http.get(rootUrl + "MonthlySubscription/AddSubscription", config)
               .then(function (response) {
-                  if (response.data == "added")
+                  if (response.data == "added") {
                       $scope.getSubscriptions("", "");
+                      $scope.carbike = "";
+                      $scope.cnic = "";
+                      $scope.amount= "",
+                      $scope.mobilenumber = "";
+                      $scope.month = "";
+                      $scope.ownername = "";
+                  }
                   else {
                       alert("Error on addding payment");
                   }
+                  $scope.currentEdit = "";
               });
       }
 

@@ -4,8 +4,9 @@
 angular.module('carApp', [])
   .controller('allCars', function ($scope, $http) {
       $scope.selected = [];
-      $scope.pageClick = function (page) {
+      $scope.parked = "all";
 
+      $scope.pageClick = function (page) {
           var data = {
               currentPage: page - 1,
               recordPerPage: 100,

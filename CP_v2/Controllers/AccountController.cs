@@ -38,7 +38,7 @@ namespace CP_v2.Controllers
             Session["User"] = user;
             if (user != null)
             {
-                FormsAuthentication.SetAuthCookie(UserName, true);
+                FormsAuthentication.SetAuthCookie(UserName, false);
                 if(user.ap_role.Title.Equals("CheckOut"))
                     return RedirectToAction("CheckOut", "Home");
                 return RedirectToAction("Index", "Home");

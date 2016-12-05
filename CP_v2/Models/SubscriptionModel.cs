@@ -7,6 +7,8 @@ namespace CP_v2.Models
 {
     public class SubscriptionModel
     {
+        public Guid id { get; set; }
+
         public string carno { get; set; }
         public string mobileno { get; set; }
 

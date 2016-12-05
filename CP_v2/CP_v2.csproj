@@ -279,6 +279,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\958044.png" />
     <Content Include="images\car-img.jpg" />
     <Content Include="images\CBT_Title.png" />
     <Content Include="images\check-mark.png" />
@@ -287,6 +288,7 @@
     <Content Include="images\icon-user.png" />
     <Content Include="images\main-bg.jpg" />
     <Content Include="images\print-report.png" />
+    <Content Include="images\small-pencil-icon-22365.png" />
     <Content Include="images\user-img.jpg" />
     <Content Include="print.html" />
     <Content Include="Scripts\angular.min.js" />

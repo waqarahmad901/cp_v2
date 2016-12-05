@@ -9,6 +9,8 @@ namespace CP_v2.Models
     {
         public bool? monthly;
         public bool? night;
+        public Guid? out_by;
+
         public string monthlyString { get { return monthly == true ? "TRUE" : "FALSE"; } }
         public string nightString { get { return night == true ? "TRUE" : "FALSE"; } }
         public string checkOutBy { get; set; }

@@ -52,7 +52,7 @@
             CP_v2.DB.ap_user user = (CP_v2.DB.ap_user)Session["User"];
             if (user == null)
             {
-                Response.Redirect("/Account/Login");
+                Response.Redirect("~/Account/Login");
             }
         }
     </script>

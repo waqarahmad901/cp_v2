@@ -115,6 +115,29 @@ namespace CP_v2
             return null;
         }
 
+        public int DeleteSubcriptionbyId(string id)
+        {
+            Guid guid = Guid.Parse(id);
+           var regis = _context.monthly_reg.FirstOrDefault(x => x.id == guid);
+            _context.monthly_reg.Remove(regis);
+            return _context.SaveChanges() ;
+        }
+
+        public SubscriptionModel GetSubcriptionbyId(string id)
+        {
+            Guid guid = Guid.Parse(id);
+            return _context.monthly_reg.Where(x => x.id == guid)
+                .Select(x =>  new SubscriptionModel
+                { amount = x.amount, cninc = x.cnic, carno = x.vehicle_no, mobileno = x.contact_no, month = x.month_name, ownername = x.ownername })
+                .FirstOrDefault();
+        }
+
+        public monthly_reg GetRegistrationbyId(string id)
+        {
+            Guid guid = Guid.Parse(id);
+            return _context.monthly_reg.Where(x=>x.id == guid).FirstOrDefault();
+        }
+
         public int CheckoutCars(string ids,Guid userId)
         {
             List<Guid> splittedGuids = ids.Substring(1).Split(',').Select(s => Guid.Parse(s)).ToList();
@@ -167,6 +190,7 @@ namespace CP_v2
             model.Subscriptions = _context.monthly_reg.Where(x => (string.IsNullOrEmpty(carno) || x.vehicle_no.ToLower() == carno.ToLower()) && (string.IsNullOrEmpty(name) || x.ownername.ToLower() == name.ToLower())).OrderByDescending(x=>x.date_registered)
                 .Select(x => new SubscriptionModel
                 {
+                    id = x.id,
                   carno = x.vehicle_no,
                    cninc = x.cnic,
                    mobileno = x.contact_no ,
@@ -205,12 +229,17 @@ namespace CP_v2
                     Amount = x.charged_amount,
                     monthly = x.is_monthly,
                     night = x.is_nightly,
-                    checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
+                    out_by = x.out_by,
+                   // checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
 
                 }
             );
+            
+
+            
             pt.Cars = cars.Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
-            pt.TotalPages = (cars.Count() / recordsPerPage) + 1;
+            pt.Cars.ForEach(x => x.checkOutBy = allUsers.Where(y => y.id == x.out_by).FirstOrDefault() == null ? "" : allUsers.Where(y => y.id == x.out_by).FirstOrDefault().username);
+            pt.TotalPages = recordsPerPage == 100 ? (cars.Count() / recordsPerPage) + 1 : 7;
             pt.CurrentPage = currentPage + 1;
             return pt;
 
