@@ -118,10 +118,10 @@ namespace CP_v2.Controllers
             return Json(new { token = pc.recript_no, parkin_time = pc.parkin_time.Value.ToShortTimeString(), parkin_date = pc.parkin_time.Value.ToShortDateString(), car_no = pc.car_no, nightly = pc.is_nightly != null && pc.is_nightly.Value == true }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public ActionResult GetParkedCars(int currentPage, string veh_no, string token_no,int recordPerPage = 10,string parked = "all")
+        public ActionResult GetParkedCars(int currentPage, string veh_no, string token_no,int recordPerPage = 10,string parked = "all",string from="",string to= "",string userid = "")
         {
             DataClass da = new DataClass();
-            var cars = da.GetParkedCars(currentPage, veh_no, token_no,recordPerPage,parked);
+            var cars = da.GetParkedCars(currentPage, veh_no, token_no,recordPerPage,parked,from,to,userid);
             cars.TotalParkedCars = da.TotalParkedInCars();
             return Json(cars, JsonRequestBehavior.AllowGet);
         }

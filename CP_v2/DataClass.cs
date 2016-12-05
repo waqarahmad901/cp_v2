@@ -208,14 +208,26 @@ namespace CP_v2
             return _context.dur_amount.Where(x => x.veh_type.name.Equals("Car")).ToList();
         }
 
-        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no,int recordsPerPage,string parked)
+        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no,int recordsPerPage,string parked,string from,string to,string userid)
         {
-            ParkedTableModel pt = new ParkedTableModel(); 
+            ParkedTableModel pt = new ParkedTableModel();
+            Guid userGuid = Guid.Empty;
+            if (!string.IsNullOrEmpty(userid))
+             userGuid = Guid.Parse(userid);
+            DateTime fromDate = new DateTime() ;
+            DateTime toDate = new DateTime();
+            if (!string.IsNullOrEmpty(from))
+                fromDate = DateTime.ParseExact(from,"dd/MM/yyyy", CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(to))
+                toDate = DateTime.ParseExact(to, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             var allUsers = _context.ap_user.ToList();
             long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no)? "0" : token_no);
             var cars = _context.parked_car.Where(x => (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower()))
             && (parked == "all" || x.parkout_time == null)
-            && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))).
+            && (string.IsNullOrEmpty(from) || x.date_created.Value >= fromDate)
+            && (string.IsNullOrEmpty(to) || x.date_created.Value < toDate)
+            && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))
+            && (Guid.Empty == userGuid || x.out_by.Value == userGuid )).
                 OrderByDescending(x => x.parkin_time).Select(x =>
                 new ParkedCars
                 {

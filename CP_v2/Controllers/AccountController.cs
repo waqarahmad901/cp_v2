@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 using CP_v2.DB;
 using System.Web.Security;
+using System.Collections.Generic;
 
 namespace CP_v2.Controllers
 {
@@ -16,10 +17,14 @@ namespace CP_v2.Controllers
             return View();
         }
 
-        public ActionResult GetAllUsers()
+        public ActionResult GetAllUsers(bool addSelect = false)
         {
             DataClass da = new DataClass();
-            var users = da.GetAllUsers().Select(x=> new {name = x.username }).ToList();
+           var users = da.GetAllUsers().Select(x=> new {name = x.username ,id=x.id}).ToList();
+            if (addSelect)
+            {
+                users.Insert(0,new { name = "All",id=new Guid() });
+            }
             return Json(users, JsonRequestBehavior.AllowGet);
 
         }
