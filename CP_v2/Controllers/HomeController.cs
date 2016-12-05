@@ -164,6 +164,9 @@ namespace CP_v2.Controllers
             cm.isMonthly = car.is_monthly == null ? false : car.is_monthly.Value;
             cm.isPaid = car.parkout_time != null;
             cm.isNight = car.is_nightly == null ? false : car.is_nightly.Value;
+            cm.tokenNo = car.recript_no;
+            cm.carNo = car.car_no;
+
             if(!cm.isMonthly)
                 cm.totalAmount = CalculateAmount(da, car, duration, car.parkin_time.Value);
             else
