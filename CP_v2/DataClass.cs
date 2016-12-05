@@ -10,10 +10,10 @@ using CP_v2.Models;
 namespace CP_v2
 {
     public class DataClass
-    {   
-        car_parkingEntities1 _context = new car_parkingEntities1();  
+    {
+        car_parkingEntities1 _context = new car_parkingEntities1();
         public ap_user VerifyUserLogin(string userName, string password)
-        {  
+        {
             return _context.ap_user.Where(x => x.username == userName && x.password == password).FirstOrDefault();
 
         }
@@ -118,16 +118,16 @@ namespace CP_v2
         public int DeleteSubcriptionbyId(string id)
         {
             Guid guid = Guid.Parse(id);
-           var regis = _context.monthly_reg.FirstOrDefault(x => x.id == guid);
+            var regis = _context.monthly_reg.FirstOrDefault(x => x.id == guid);
             _context.monthly_reg.Remove(regis);
-            return _context.SaveChanges() ;
+            return _context.SaveChanges();
         }
 
         public SubscriptionModel GetSubcriptionbyId(string id)
         {
             Guid guid = Guid.Parse(id);
             return _context.monthly_reg.Where(x => x.id == guid)
-                .Select(x =>  new SubscriptionModel
+                .Select(x => new SubscriptionModel
                 { amount = x.amount, cninc = x.cnic, carno = x.vehicle_no, mobileno = x.contact_no, month = x.month_name, ownername = x.ownername })
                 .FirstOrDefault();
         }
@@ -135,14 +135,14 @@ namespace CP_v2
         public monthly_reg GetRegistrationbyId(string id)
         {
             Guid guid = Guid.Parse(id);
-            return _context.monthly_reg.Where(x=>x.id == guid).FirstOrDefault();
+            return _context.monthly_reg.Where(x => x.id == guid).FirstOrDefault();
         }
 
-        public int CheckoutCars(string ids,Guid userId)
+        public int CheckoutCars(string ids, Guid userId)
         {
             List<Guid> splittedGuids = ids.Substring(1).Split(',').Select(s => Guid.Parse(s)).ToList();
             var carList = _context.parked_car.Where(x => splittedGuids.Contains(x.id)).ToList();
-         
+
             foreach (var item in carList)
             {
                 DateTime durationTime = new DateTime((DateTime.Now - item.parkin_time.Value).Ticks);
@@ -184,22 +184,31 @@ namespace CP_v2
             _context.SaveChanges();
         }
 
-        public SubscriptionTableModel GetAllSubscriptions(string carno,string name, int page)
+        public SubscriptionTableModel GetAllSubscriptions(string carno, string name, string month,int page)
         {
+            int recordPerPage = 100;
             SubscriptionTableModel model = new SubscriptionTableModel();
-            model.Subscriptions = _context.monthly_reg.Where(x => (string.IsNullOrEmpty(carno) || x.vehicle_no.ToLower() == carno.ToLower()) && (string.IsNullOrEmpty(name) || x.ownername.ToLower() == name.ToLower())).OrderByDescending(x=>x.date_registered)
-                .Select(x => new SubscriptionModel
-                {
-                    id = x.id,
+            model.Subscriptions = _context.monthly_reg
+                .Where(x => (string.IsNullOrEmpty(carno) || x.vehicle_no.ToLower() == carno.ToLower()) 
+                && (string.IsNullOrEmpty(name) || x.ownername.ToLower() == name.ToLower()) 
+                && (string.IsNullOrEmpty(month) || x.month_name.ToLower() == month.ToLower())) 
+              .Select(x => new SubscriptionModel
+              {
+                  id = x.id,
                   carno = x.vehicle_no,
-                   cninc = x.cnic,
-                   mobileno = x.contact_no ,
-                   ownername = x.ownername,
-                   amount = x.amount,
-                   month = x.month_name
-                }).ToList();
+                  cninc = x.cnic,
+                  mobileno = x.contact_no,
+                  ownername = x.ownername,
+                  amount = x.amount,
+                  month = x.month_name
+              })
+             
+              .ToList();
+            model.TotalPages = (model.Subscriptions.Count / recordPerPage) + 1;
+            model.Subscriptions = model.Subscriptions.OrderByDescending(x => x.month)
+              .Skip(recordPerPage * (page - 1)).Take(recordPerPage).ToList();
             model.CurrentPage = page;
-            model.TotalPages = 7;
+         
             return model;
         }
 
@@ -208,26 +217,26 @@ namespace CP_v2
             return _context.dur_amount.Where(x => x.veh_type.name.Equals("Car")).ToList();
         }
 
-        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no,int recordsPerPage,string parked,string from,string to,string userid)
+        public ParkedTableModel GetParkedCars(int currentPage, string veh_no, string token_no, int recordsPerPage, string parked, string from, string to, string userid)
         {
             ParkedTableModel pt = new ParkedTableModel();
             Guid userGuid = Guid.Empty;
             if (!string.IsNullOrEmpty(userid))
-             userGuid = Guid.Parse(userid);
-            DateTime fromDate = new DateTime() ;
+                userGuid = Guid.Parse(userid);
+            DateTime fromDate = new DateTime();
             DateTime toDate = new DateTime();
             if (!string.IsNullOrEmpty(from))
-                fromDate = DateTime.ParseExact(from,"dd/MM/yyyy", CultureInfo.InvariantCulture);
+                fromDate = DateTime.ParseExact(from, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(to))
                 toDate = DateTime.ParseExact(to, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             var allUsers = _context.ap_user.ToList();
-            long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no)? "0" : token_no);
+            long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no) ? "0" : token_no);
             var cars = _context.parked_car.Where(x => (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower()))
             && (parked == "all" || x.parkout_time == null)
             && (string.IsNullOrEmpty(from) || x.date_created.Value >= fromDate)
             && (string.IsNullOrEmpty(to) || x.date_created.Value < toDate)
             && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))
-            && (Guid.Empty == userGuid || x.out_by.Value == userGuid )).
+            && (Guid.Empty == userGuid || x.out_by.Value == userGuid)).
                 OrderByDescending(x => x.parkin_time).Select(x =>
                 new ParkedCars
                 {
@@ -242,13 +251,13 @@ namespace CP_v2
                     monthly = x.is_monthly,
                     night = x.is_nightly,
                     out_by = x.out_by,
-                   // checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
+                    // checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
 
                 }
             );
-            
 
-            
+
+
             pt.Cars = cars.Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
             pt.Cars.ForEach(x => x.checkOutBy = allUsers.Where(y => y.id == x.out_by).FirstOrDefault() == null ? "" : allUsers.Where(y => y.id == x.out_by).FirstOrDefault().username);
             pt.TotalPages = recordsPerPage == 100 ? (cars.Count() / recordsPerPage) + 1 : 7;
@@ -257,11 +266,11 @@ namespace CP_v2
 
         }
 
-        public PaymentTableModel GetAllPayemnts(string userName,int currentPage)
+        public PaymentTableModel GetAllPayemnts(string userName, int currentPage)
         {
             PaymentTableModel model = new PaymentTableModel();
             model.Payments = _context.payments.Where(x => string.IsNullOrEmpty(userName) || x.ap_user.username.ToLower() == userName.ToLower())
-                .Select(x=> new PaymentModel
+                .Select(x => new PaymentModel
                 {
                     username = x.ap_user.username,
                     amount = x.amount,
@@ -277,7 +286,7 @@ namespace CP_v2
 
         public bool AddNewParkedCar(parked_car car)
         {
-             _context.parked_car.Add(car);
+            _context.parked_car.Add(car);
             return _context.SaveChanges() > 0;
         }
 
@@ -291,8 +300,8 @@ namespace CP_v2
 
         public bool CheckCarRegisterInCurrentMonth(string veh_no)
         {
-            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month,05); 
-            var car = _context.monthly_reg.Where(x=> x.vehicle_no.ToLower().Equals(veh_no)).FirstOrDefault();
+            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 05);
+            var car = _context.monthly_reg.Where(x => x.vehicle_no.ToLower().Equals(veh_no)).FirstOrDefault();
             if (car == null)
                 return false;
             DateTime carMonth = new DateTime(DateTime.Now.Year, int.Parse(car.month_name), DateTime.Now.Day);
@@ -322,10 +331,10 @@ namespace CP_v2
         public parked_car GetParkedCarByTokenNo(string token_no)
         {
             long result = 0;
-            bool token = long.TryParse(token_no,out result);
-            parked_car car =   _context.parked_car.Where(x=> x.recript_no == result || x.car_no.Contains(token_no)).OrderByDescending(x=>x.date_created).FirstOrDefault();
+            bool token = long.TryParse(token_no, out result);
+            parked_car car = _context.parked_car.Where(x => x.recript_no == result || x.car_no.Contains(token_no)).OrderByDescending(x => x.date_created).FirstOrDefault();
             return car;
-            
+
         }
     }
 }

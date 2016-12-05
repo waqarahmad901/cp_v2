@@ -39,10 +39,10 @@ namespace CP_v2.Controllers
             return Content("added");
         }
 
-        public ActionResult GetAllSubscriptions(string carno, string name)
+        public ActionResult GetAllSubscriptions(string carno, string name,string month,int page)
         {
             DataClass da = new DataClass();
-            var subscription = da.GetAllSubscriptions(carno,name, 1);
+            var subscription = da.GetAllSubscriptions(carno,name,month, page);
 
             return Json(subscription, JsonRequestBehavior.AllowGet);
         }

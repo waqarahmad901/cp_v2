@@ -250,3 +250,19 @@ tr:nth-child(even) {
 .nav li {float: left;}
 .nav li a {display: block;color: white;text-align: center; padding: 15px 25px;text-decoration: none;}
 .nav li a:hover { background-color: #111;}
+
+::-webkit-input-placeholder {
+   color: gray;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: gray;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: gray;  
+}
+
+:-ms-input-placeholder {  
+   color: gray;  
+}

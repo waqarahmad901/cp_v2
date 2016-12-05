@@ -47,24 +47,27 @@
     <div class="clear"></div>
     <table>
         <tr>
-            <td colspan="7" class="filter">
+            <td colspan="8" class="filter">
                 <b>Filter By</b>
-                <input type="text" ng-model="carnosearch" placeholder="Car No" />
+                <input type="text" ng-model="carnosearch" placeholder="Car No" style="text-transform:uppercase"/>
                 <input type="text" ng-model="ownernamesearch" placeholder="Enter Owner Name" />
+                <input type="text" ng-model="monthsearch" placeholder="Month" />
                 <input type="submit" ng-click="search()" value="Search" />
                 <input type="submit" value="Clear" ng-click="clear()" />
             </td>
         </tr>
         <tr>
+            <th>sr No</th>
             <th>Car No</th>
             <th>Mobile No.</th>
             <th>Cnic</th>
             <th>Owner Name.</th>
             <th>Month.</th>
             <th>Amount.</th>
-            <th>Edit</th>
+            <th><img src="~/images/download.jpg" style="cursor:pointer;width:25px" ng-click="add()" /></th>
         </tr>
         <tr ng-repeat="p in subscriptionTable.Subscriptions">
+            <td>{{((subscriptionTable.CurrentPage - 1) * 100) +( $index +1)}}</td>
             <td>{{p.carno}}</td>
             <td>{{p.mobileno}}</td>
             <td>{{p.cninc}}</td>
@@ -73,25 +76,19 @@
             <td>{{p.amount}}</td>
             <td><img src="~/images/small-pencil-icon-22365.png" style="cursor:pointer;width:25px" ng-click="edit(p.id)"/>
              <img src="~/images/958044.png" style="cursor:pointer;width:25px" ng-click="delete(p.id)" /></td>
-        </tr>
-        
-        @*<tr>
-            <td colspan="6">
+        </tr> 
+        <tr>
+            <td colspan="10">
                 <div class="pagination">
                     <ul>
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a class="active" href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">6</a></li>
-                        <li><a href="#">7</a></li>
-                        <li><a href="#">»</a></li>
+                        <li ng-click="pageClick(subscriptionTable.CurrentPage - 1)" ng-if="subscriptionTable.CurrentPage != 1"><a ng-if="subscriptionTable.CurrentPage != 1">«</a></li>
+                        <li ng-repeat="n in range(1,subscriptionTable.TotalPages)" ng-click="pageClick(n)"><a ng-class="subscriptionTable.CurrentPage == n ? 'active' : ''">{{n}}</a></li>
+                        <li ng-click="pageClick(subscriptionTable.CurrentPage + 1)" ng-if="subscriptionTable.CurrentPage != subscriptionTable.TotalPages"><a ng-if="subscriptionTable.CurrentPage != subscriptionTable.TotalPages">»</a></li>
                     </ul>
                 </div>
             </td>
-        </tr>*@
+        </tr>
+
     </table>
     <div class="copyright">&copy; 2016. All Rights Reserved.</div>
 </div>

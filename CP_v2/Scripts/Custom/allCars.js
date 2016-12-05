@@ -84,6 +84,7 @@ angular.module('carApp', [])
           $scope.token_no = "";
           $scope.from = "";
           $scope.to = "";
+          $scope.user = $scope.users[0].id;
           $scope.pageClick(1);
       }
 

@@ -4,10 +4,12 @@
 angular.module('carApp', [])
   .controller('monthlySubscriptionController', function ($scope, $http) {
       $scope.currentEdit = "";
-      $scope.getSubscriptions = function (carno,name) {
+      $scope.getSubscriptions = function (page) {
           var data = {
-              carno : carno,
-              name : name
+              carno: $scope.carnosearch,
+              name: $scope.ownernamesearch,
+              month: $scope.monthsearch,
+              page: page
           };
           var config = {
               params: data,
@@ -18,11 +20,22 @@ angular.module('carApp', [])
                 $scope.subscriptionTable = response.data;
             });
       }
+
+      $scope.add = function () {
+          $scope.carbike = "";
+          $scope.cnic = "";
+          $scope.amount = "",
+          $scope.mobilenumber = "";
+          $scope.month = "";
+          $scope.ownername = "";
+
+          $scope.currentEdit = "";
+      }
       $scope.delete = function (id) {
           if (!confirm("Are you sured you want top delete this car"))
               return;
           var data = {
-              id : id
+              id: id
           };
           var config = {
               params: data,
@@ -30,17 +43,20 @@ angular.module('carApp', [])
           };
           $http.get(rootUrl + "MonthlySubscription/DeleteSubcriptionbyId", config)
             .then(function (response) {
-                $scope.getSubscriptions("", "");
+                $scope.getSubscriptions(1);
 
 
             });
-          
+
       }
-      $scope.edit = function (id)
-      {
+
+      $scope.pageClick = function (page) {
+          $scope.getSubscriptions(page);
+      }
+      $scope.edit = function (id) {
           $scope.currentEdit = id;
           var data = {
-              id : id
+              id: id
           };
           var config = {
               params: data,
@@ -56,11 +72,10 @@ angular.module('carApp', [])
                 $scope.ownername = response.data.ownername;
             });
       }
-      $scope.clear = function ()
-      {
+      $scope.clear = function () {
           $scope.carnosearch = "";
           $scope.ownernamesearch = "";
-          $scope.getSubscriptions("", "");
+          $scope.getSubscriptions(1);
       }
       $scope.range = function (min, max, step) {
           step = step || 1;
@@ -73,7 +88,7 @@ angular.module('carApp', [])
 
       $scope.addSubscription = function () {
           var data = {
-              id :   $scope.currentEdit,
+              id: $scope.currentEdit,
               carbike: $scope.carbike,
               cnic: $scope.cnic,
               mobilenumber: $scope.mobilenumber,
@@ -90,10 +105,10 @@ angular.module('carApp', [])
           $http.get(rootUrl + "MonthlySubscription/AddSubscription", config)
               .then(function (response) {
                   if (response.data == "added") {
-                      $scope.getSubscriptions("", "");
+                      $scope.getSubscriptions(1);
                       $scope.carbike = "";
                       $scope.cnic = "";
-                      $scope.amount= "",
+                      $scope.amount = "",
                       $scope.mobilenumber = "";
                       $scope.month = "";
                       $scope.ownername = "";
@@ -105,11 +120,10 @@ angular.module('carApp', [])
               });
       }
 
-      $scope.search = function ()
-      {
-          $scope.getSubscriptions($scope.carnosearch, $scope.ownernamesearch);
+      $scope.search = function () {
+          $scope.getSubscriptions(1);
       }
 
-      $scope.getSubscriptions("","");
+      $scope.getSubscriptions(1);
 
   });
