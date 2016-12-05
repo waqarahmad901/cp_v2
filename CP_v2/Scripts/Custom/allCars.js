@@ -16,7 +16,7 @@ angular.module('carApp', [])
       $http.get(rootUrl + "Account/GetAllUsers",config)
           .then(function (response) {
               $scope.users = response.data;
-              $scope.user = "00000000-0000-0000-0000-000000000000";
+              $scope.user = response.data[0].id;
           });
       $scope.pageClick = function (page) {
           var data = {
