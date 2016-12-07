@@ -95,14 +95,14 @@ angular.module('carApp', [])
           $http.get(rootUrl + "Home/CheckOutCar", config)
                .then(function (response) {
                    $scope.checkout = new Object()
-                   $scope.pageClick(1);
                    $scope.out_token_no = "";
                    $scope.checkout.time = "00 Hours 00 Minutes";
                    $scope.checkout.totalAmount = "0.00";
                    $scope.checkout.isPaid = true;
                    $scope.checkout.isMonthly = false;
                    $scope.TotalParkedCars = response.parkinCars;
-                  // alert("car checkout successfully");
+                     $scope.pageClick(1);
+
                });
       }
       

@@ -22,10 +22,19 @@
                         <input type="hidden" id="vehimage" value="@ViewBag.pic" />
 
                         <p class="no">
-                            <input type="text" ng-model="out_token_no" id="outtoken" ng-keydown="checkoutTokenInfo($event)" placeholder="Enter Car No OR Token No" required  style="text-transform:uppercase; font-size:20px; height:50px"/>
+                            <input type="text" ng-model="out_token_no" id="outtoken" autocomplete="off" ng-keydown="checkoutTokenInfo($event)" placeholder="Enter Car No OR Token No" required  style="text-transform:uppercase; font-size:20px; height:50px"/>
                         </p>
                         <div class="token">
                             <div class="checkin-detail">
+                                <div class="bold">Car No</div>
+                                <div class="normal">{{checkout.carNo}}</div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
+
+                                <div class="bold">Token No</div>
+                                <div class="normal">{{checkout.tokenNo}}</div>
+                                <div class="clear"></div>
+                                <div class="gray-sprtr"></div>
                                 <div class="bold">Checkin Time</div>
                                 <div class="normal">{{checkout.checkinTime}}</div>
                                 <div class="clear"></div>

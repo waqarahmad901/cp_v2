@@ -4,14 +4,30 @@
 angular.module('carApp', [])
   .controller('allCars', function ($scope, $http) {
       $scope.selected = [];
-      $scope.pageClick = function (page) {
+      $scope.parked = "all";
+      var data = {
+          addSelect: true
+      };
+      var config = {
+          params: data,
+          headers: { 'Accept': 'application/json' }
+      };
 
+      $http.get(rootUrl + "Account/GetAllUsers",config)
+          .then(function (response) {
+              $scope.users = response.data;
+              $scope.user = response.data[0].id;
+          });
+      $scope.pageClick = function (page) {
           var data = {
               currentPage: page - 1,
               recordPerPage: 100,
               veh_no: $scope.veh_no,
               parked: $scope.parked,
               token_no: $scope.token_no,
+              from: $scope.from,
+              to: $scope.to,
+              userid: $scope.user 
           };
           var config = {
               params: data,
@@ -24,14 +40,14 @@ angular.module('carApp', [])
                    if (page == 1)
                        $scope.token_no_current = $scope.carTable.token_no_current;
                    TotalParkedCars = $scope.carTable.TotalParkedCars;
-               }); 
+               });
       }
 
       $scope.CheckoutCars = function () {
-         
+
           var selected = $scope.selected;
           $scope.selectedIds = "";
-         
+
           for (var key in selected) {
               if (selected.hasOwnProperty(key) && selected[key]) {
                   $scope.selectedIds += "," + key
@@ -39,7 +55,7 @@ angular.module('carApp', [])
           }
 
           var data = {
-              selectedIds : $scope.selectedIds
+              selectedIds: $scope.selectedIds
           };
           var config = {
               params: data,
@@ -60,6 +76,17 @@ angular.module('carApp', [])
           }
           return input;
       };
+
+
+      $scope.clearControls = function () {
+          $scope.veh_no = "";
+          $scope.parked = "all";
+          $scope.token_no = "";
+          $scope.from = "";
+          $scope.to = "";
+          $scope.user = $scope.users[0].id;
+          $scope.pageClick(1);
+      }
 
       $scope.pageClick(1);
 

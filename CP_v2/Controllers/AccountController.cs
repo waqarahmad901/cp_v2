@@ -19,13 +19,22 @@ namespace CP_v2.Controllers
 
         public ActionResult GetAllUsers(bool addSelect = false)
         {
-            DataClass da = new DataClass();
-           var users = da.GetAllUsers().Select(x=> new {name = x.username ,id=x.id}).ToList();
-            if (addSelect)
+            try
             {
-                users.Insert(0,new { name = "All",id=new Guid() });
+
+                DataClass da = new DataClass();
+                var users = da.GetAllUsers().Select(x => new { name = x.username, id = x.id }).ToList();
+                if (addSelect)
+                {
+                    users.Insert(0, new { name = "All", id = new Guid() });
+                }
+                return Json(users, JsonRequestBehavior.AllowGet);
             }
-            return Json(users, JsonRequestBehavior.AllowGet);
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:/cp.txt", ex.Message + ex.StackTrace);
+            }
+            return null;
 
         }
         //
@@ -44,11 +53,11 @@ namespace CP_v2.Controllers
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(UserName, false);
-                if(user.ap_role.Title.Equals("CheckOut"))
+                if (user.ap_role.Title.Equals("CheckOut"))
                     return RedirectToAction("CheckOut", "Home");
                 return RedirectToAction("Index", "Home");
             }
-            
+
 
             return View();
 
@@ -64,12 +73,12 @@ namespace CP_v2.Controllers
 
         //
         // POST: /Account/Register
-      
+
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
         }
-       
+
     }
 }

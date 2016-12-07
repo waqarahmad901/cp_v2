@@ -135,7 +135,6 @@ F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\bin\Microsoft.Owin.Security.Twi
 F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\obj\Debug\CP_v2.dll
 F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\obj\Debug\CP_v2.pdb
-F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\obj\Debug\CP_v2.csprojResolveAssemblyReference.cache
 E:\Car\Waqar\cp_v2\CP_v2\bin\roslyn\csc.exe
 E:\Car\Waqar\cp_v2\CP_v2\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 E:\Car\Waqar\cp_v2\CP_v2\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -205,3 +204,4 @@ E:\Car\Waqar\cp_v2\CP_v2\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\Car\Waqar\cp_v2\CP_v2\obj\Debug\CP_v2.csprojResolveAssemblyReference.cache
 E:\Car\Waqar\cp_v2\CP_v2\obj\Debug\CP_v2.dll
 E:\Car\Waqar\cp_v2\CP_v2\obj\Debug\CP_v2.pdb
+F:\Clients\Imran Elixir Parking\CP_v2Clone\CP_v2\obj\Debug\CP_v2.csprojResolveAssemblyReference.cache

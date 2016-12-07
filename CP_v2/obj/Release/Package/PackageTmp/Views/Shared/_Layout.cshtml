@@ -5,20 +5,25 @@
     <title>Car Parking</title>
     <link href="~/Content/styles.css" type="text/css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/pdfmake.min.js"></script>
     <script src="~/Scripts/vfs_fonts.js"></script>
     <script src="~/Scripts/Custom/util.js"></script>
+
     @{var date = DateTime.Now; }
     <script type="text/javascript">
         var rootUrl = '@Url.Content("~/")';
-        
+
         function GetClock() {
-            var d = new Date();
-         
+           var d = new Date();
+
             if (nyear < 1000) nyear += 1900;
-            var nhour = @date.Hour, nmin = @date.Minute, nsec = @date.Second, ap;
-            var nday = @date.Day, nmonth = @date.Month, ndate = d.getDate(), nyear = @date.Year;
+            var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d.getSeconds(), ap;
+            var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d.getYear();
             if (nhour == 0) { ap = " AM"; nhour = 12; }
             else if (nhour < 12) { ap = " AM"; }
             else if (nhour == 12) { ap = " PM"; }
@@ -48,7 +53,7 @@
 
         }
 
-        @{ 
+        @{
             CP_v2.DB.ap_user user = (CP_v2.DB.ap_user)Session["User"];
             if (user == null)
             {
