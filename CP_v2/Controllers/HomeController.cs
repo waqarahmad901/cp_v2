@@ -221,7 +221,7 @@ namespace CP_v2.Controllers
             {
                 if (isNightCalculateAmount)
                     totlalAmount = totlalAmount + nightRate.Value;
-                else 
+                else if(duration.Day == 1)
                     totlalAmount = nightRate.Value;
 
             }
