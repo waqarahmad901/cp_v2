@@ -41,30 +41,52 @@
         <div ng-repeat="shift in shifts">
             <h2 style="text-decoration:underline; float:left">Shift {{$index + 1}}</h2> <div style="float:left;font-size: 12pt;padding-top: 28px; margin-left: 10px;">({{shift.FromTime}}   <b>To</b>   {{shift.ToTime}})</div> 
             <div style="width:100%; float:left; margin-bottom: 10px;">
-                <div style="float:left;width: 200px;">
+                <div style="float:left;width: 250px;">
                     Total Cash for shift:
                 </div>
-                <div style="float:left; margin-left:10%">
+                <div style="float:left; margin-left:10%; width:50px">
                     <b> {{shift.CashForShift}}</b>
                 </div>
             
-                <div style="float:left;width: 200px;margin-left:10%">
+                <div style="float:left;width: 250px;margin-left:10%">
                     Total Vehicle Parked In:
                 </div>
 
-                <div style="float:left; margin-left:10%">
+                <div style="float:left; margin-left:10%; width:50px">
                     <b>  {{shift.TotalVehicleIn}}</b>
                 </div>
             </div>
             <div style="width:100%; float:left; margin-bottom: 10px;">
-                <div style="float:left;width: 200px;">
+                <div style="float:left;width: 250px;">
                     Total Vehicle Parked Out:
                 </div>
 
-                <div style="float:left; margin-left:10%">
+                <div style="float:left; margin-left:10%; width:50px">
                     <b>{{shift.TotalVehicleOut}}</b> 
                 </div>
+
+                <div style="float:left;width: 250px;margin-left:10%">
+                    Total Vehicle Parked In Monthly:
+                </div>
+
+                <div style="float:left; margin-left:10%; width:50px">
+                    <b>{{shift.TotalVehicleInMonthly}}</b>
+                </div>
+
+
             </div>
+            <div style="width:100%; float:left; margin-bottom: 10px;">
+                <div style="float:left;width: 250px;">
+                    Total Vehicle Parked Out Monthly:
+                </div>
+
+                <div style="float:left; margin-left:10%; width:50px">
+                    <b>{{shift.TotalVehicleOutMonthly}}</b>
+                </div>
+            </div>
+
+            
+
             <table style="margin-bottom:10px">
 
                 <tr>

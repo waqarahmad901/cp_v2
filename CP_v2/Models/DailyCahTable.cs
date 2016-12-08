@@ -7,6 +7,10 @@ namespace CP_v2.Models
 {
     public class DailyCahTable
     {
+        public int totalParkedInMonthly { get; set; }
+
+        public int totalParkedOutMonthly { get; set; }
+
         public double? totalAmount { get; set; }
         public string user { get; set;}
         public int totalParkedIn { get; set;}

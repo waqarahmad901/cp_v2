@@ -15,7 +15,12 @@ namespace CP_v2.Models
 
         public int TotalVehicleOut { get { return shiftsTable.Select(x => x.totalParkedOut).Sum(); } }
 
-       public string FromTime { get; set; }
+        public int TotalVehicleInMonthly { get { return shiftsTable.Select(x => x.totalParkedInMonthly).Sum(); } }
+
+        public int TotalVehicleOutMonthly { get { return shiftsTable.Select(x => x.totalParkedOutMonthly).Sum(); } }
+
+
+        public string FromTime { get; set; }
         public string ToTime { get; set; }
 
         public List<DailyCahTable> shiftsTable { get; set; } 

@@ -219,8 +219,11 @@ namespace CP_v2.Controllers
             totlalAmount +=((duration.Day -1) * DayRate)?? 0 ;
             if (car.is_nightly != null && car.is_nightly.Value)
             {
-                if(isNightCalculateAmount)
+                if (isNightCalculateAmount)
                     totlalAmount = totlalAmount + nightRate.Value;
+                else 
+                    totlalAmount = nightRate.Value;
+
             }
             else
             {

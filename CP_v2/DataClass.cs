@@ -35,7 +35,7 @@ namespace CP_v2
                 DailyCashModel model = new DailyCashModel();
 
                 var resultsIn = (from a in _context.parked_car
-                                 where a.parkout_time >= shif1From && a.parkout_time <= shift1To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                                 where a.parkout_time >= shif1From && a.parkout_time <= shift1To
                                  group a by a.out_by
                                ).ToList();
 
@@ -45,12 +45,13 @@ namespace CP_v2
                                    totalAmount = r.Sum(x => x.charged_amount),
                                    user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                    totalParkedIn = 0,
-                                   totalParkedOut = r.Count()
+                                   totalParkedOut = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                                   totalParkedOutMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
                                }).ToList();
 
 
                 var resultsOut = (from a in _context.parked_car
-                                  where a.parkin_time >= shif1From && a.parkin_time <= shift1To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                                  where a.parkin_time >= shif1From && a.parkin_time <= shift1To
                                   group a by a.created_by
                    ).ToList();
 
@@ -59,7 +60,8 @@ namespace CP_v2
                                 {
                                     totalAmount = 0,
                                     user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
-                                    totalParkedIn = r.Count(),
+                                    totalParkedIn = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                                    totalParkedInMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
                                     totalParkedOut = 0
                                 }).ToList();
 
@@ -72,7 +74,7 @@ namespace CP_v2
                 model = new DailyCashModel();
 
                 resultsIn = (from a in _context.parked_car
-                             where a.parkout_time >= shif2From && a.parkout_time <= shift2To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                             where a.parkout_time >= shif2From && a.parkout_time <= shift2To
                              group a by a.out_by
                             ).ToList();
 
@@ -82,12 +84,13 @@ namespace CP_v2
                                totalAmount = r.Sum(x => x.charged_amount),
                                user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                totalParkedIn = 0,
-                               totalParkedOut = r.Count()
+                               totalParkedOut = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                               totalParkedOutMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
                            }).ToList();
 
 
                 resultsOut = (from a in _context.parked_car
-                              where a.parkin_time >= shif2From && a.parkin_time <= shift2To && (!a.is_monthly.HasValue || a.is_monthly == (bool?)false)
+                              where a.parkin_time >= shif2From && a.parkin_time <= shift2To
                               group a by a.created_by
                   ).ToList();
 
@@ -96,7 +99,8 @@ namespace CP_v2
                             {
                                 totalAmount = 0,
                                 user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
-                                totalParkedIn = r.Count(),
+                                totalParkedIn = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                                totalParkedInMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
                                 totalParkedOut = 0
                             }).ToList();
 
@@ -184,14 +188,14 @@ namespace CP_v2
             _context.SaveChanges();
         }
 
-        public SubscriptionTableModel GetAllSubscriptions(string carno, string name, string month,int page)
+        public SubscriptionTableModel GetAllSubscriptions(string carno, string name, string month, int page)
         {
             int recordPerPage = 100;
             SubscriptionTableModel model = new SubscriptionTableModel();
             model.Subscriptions = _context.monthly_reg
-                .Where(x => (string.IsNullOrEmpty(carno) || x.vehicle_no.ToLower() == carno.ToLower()) 
-                && (string.IsNullOrEmpty(name) || x.ownername.ToLower() == name.ToLower()) 
-                && (string.IsNullOrEmpty(month) || x.month_name.ToLower() == month.ToLower())) 
+                .Where(x => (string.IsNullOrEmpty(carno) || x.vehicle_no.ToLower() == carno.ToLower())
+                && (string.IsNullOrEmpty(name) || x.ownername.ToLower() == name.ToLower())
+                && (string.IsNullOrEmpty(month) || x.month_name.ToLower() == month.ToLower()))
               .Select(x => new SubscriptionModel
               {
                   id = x.id,
@@ -202,13 +206,13 @@ namespace CP_v2
                   amount = x.amount,
                   month = x.month_name
               })
-             
+
               .ToList();
             model.TotalPages = (model.Subscriptions.Count / recordPerPage) + 1;
             model.Subscriptions = model.Subscriptions.OrderByDescending(x => x.month)
               .Skip(recordPerPage * (page - 1)).Take(recordPerPage).ToList();
             model.CurrentPage = page;
-         
+
             return model;
         }
 
@@ -232,28 +236,28 @@ namespace CP_v2
             var allUsers = _context.ap_user.ToList();
             long tokenNoLong = long.Parse(string.IsNullOrEmpty(token_no) ? "0" : token_no);
             var cars = _context.parked_car.Where(x => (string.IsNullOrEmpty(veh_no) || x.car_no.ToLower().Contains(veh_no.ToLower()))
-            && (parked == "all" || x.parkout_time == null)
-            && (string.IsNullOrEmpty(from) || x.date_created.Value >= fromDate)
-            && (string.IsNullOrEmpty(to) || x.date_created.Value < toDate)
-            && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))
-            && (Guid.Empty == userGuid || x.out_by.Value == userGuid)).
-                OrderByDescending(x => x.parkin_time).Select(x =>
-                new ParkedCars
-                {
-                    Id = x.id,
-                    checkinby = x.ap_user == null ? "" : x.ap_user.username,
-                    checkinDate = x.parkin_time,
-                    checkoutDate = x.parkout_time,
-                    tokenNo = x.recript_no,
-                    vehicle_NO = x.car_no,
-                    Duration = x.parked_duration,
-                    Amount = x.charged_amount,
-                    monthly = x.is_monthly,
-                    night = x.is_nightly,
-                    out_by = x.out_by,
-                    // checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
+                    && (parked == "all" || x.parkout_time == null)
+                    && (string.IsNullOrEmpty(from) || x.parkout_time.Value >= fromDate)
+                    && (string.IsNullOrEmpty(to) || x.parkout_time.Value < toDate)
+                    && (string.IsNullOrEmpty(token_no) || x.recript_no.Equals(tokenNoLong))
+                    && (Guid.Empty == userGuid || x.out_by.Value == userGuid)).
+                        OrderByDescending(x => x.parkin_time).Select(x =>
+                        new ParkedCars
+                        {
+                            Id = x.id,
+                            checkinby = x.ap_user == null ? "" : x.ap_user.username,
+                            checkinDate = x.parkin_time,
+                            checkoutDate = x.parkout_time,
+                            tokenNo = x.recript_no,
+                            vehicle_NO = x.car_no,
+                            Duration = x.parked_duration,
+                            Amount = x.charged_amount,
+                            monthly = x.is_monthly,
+                            night = x.is_nightly,
+                            out_by = x.out_by,
+                            // checkOutBy = _context.ap_user.Where(a => a.id == x.out_by).FirstOrDefault().username
 
-                }
+                        }
             );
 
 
