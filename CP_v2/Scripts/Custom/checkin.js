@@ -59,8 +59,12 @@ angular.module('carApp', [])
                            isCarFound = true;
                            $scope.checkout = response.data;
                            oldToken = $scope.out_token_no;
-                           if ($scope.checkout.isPaid || $scope.checkout.isMonthly) {
+                           if ($scope.checkout.isPaid) {
                                $scope.checkout.time = "00 Hours 00 Minutes";
+                               $scope.checkout.totalAmount = "0.00";
+                           }
+                           if ($scope.checkout.isMonthly)
+                           {
                                $scope.checkout.totalAmount = "0.00";
                            }
                        }

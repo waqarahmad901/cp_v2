@@ -88,9 +88,14 @@ namespace CP_v2.Controllers
             pc.checkinimage = vehimage;
             da.AddNewParkedCar(pc);
 
-            return Json(new { token = pc.recript_no, parkin_time = pc.parkin_time.Value.ToShortTimeString(), parkin_date = pc.parkin_time.Value.ToShortDateString(), car_no = pc.car_no,
-                challaned = ((pc.is_challaned == null || !pc.is_challaned.Value) ? "No" : "Yes") ,
-                nightly = ((pc.is_nightly== null || !pc.is_nightly.Value) ? "No" : "Yes")
+            return Json(new
+            {
+                token = pc.recript_no,
+                parkin_time = pc.parkin_time.Value.ToShortTimeString(),
+                parkin_date = pc.parkin_time.Value.ToShortDateString(),
+                car_no = pc.car_no,
+                challaned = ((pc.is_challaned == null || !pc.is_challaned.Value) ? "No" : "Yes"),
+                nightly = ((pc.is_nightly == null || !pc.is_nightly.Value) ? "No" : "Yes")
             }, JsonRequestBehavior.AllowGet);
 
             //PrintTicket pt = new PrintTicket();
@@ -118,10 +123,10 @@ namespace CP_v2.Controllers
             return Json(new { token = pc.recript_no, parkin_time = pc.parkin_time.Value.ToShortTimeString(), parkin_date = pc.parkin_time.Value.ToShortDateString(), car_no = pc.car_no, nightly = pc.is_nightly != null && pc.is_nightly.Value == true }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public ActionResult GetParkedCars(int currentPage, string veh_no, string token_no,int recordPerPage = 10,string parked = "all",string from="",string to= "",string userid = "")
+        public ActionResult GetParkedCars(int currentPage, string veh_no, string token_no, int recordPerPage = 10, string parked = "all", string from = "", string to = "", string userid = "")
         {
             DataClass da = new DataClass();
-            var cars = da.GetParkedCars(currentPage, veh_no, token_no,recordPerPage,parked,from,to,userid);
+            var cars = da.GetParkedCars(currentPage, veh_no, token_no, recordPerPage, parked, from, to, userid);
             cars.TotalParkedCars = da.TotalParkedInCars();
             return Json(cars, JsonRequestBehavior.AllowGet);
         }
@@ -154,20 +159,20 @@ namespace CP_v2.Controllers
             parked_car car = da.GetParkedCarByTokenNo(token_no);
             if (car == null || string.IsNullOrEmpty(token_no))
             {
-                    return Content("null");
+                return Content("null");
             }
-            
+
             DateTime duration = new DateTime((DateTime.Now - car.parkin_time.Value).Ticks);
             CheckoutModel cm = new CheckoutModel();
             cm.checkinTime = car.parkin_time.Value.ToShortDateString() + " " + car.parkin_time.Value.ToShortTimeString();
-            cm.time = duration.Day - 1+ " Days " +duration.ToString("HH") + " Hours " + duration.ToString("mm") + " Minutes ";
+            cm.time = duration.Day - 1 + " Days " + duration.ToString("HH") + " Hours " + duration.ToString("mm") + " Minutes ";
             cm.isMonthly = car.is_monthly == null ? false : car.is_monthly.Value;
             cm.isPaid = car.parkout_time != null;
             cm.isNight = car.is_nightly == null ? false : car.is_nightly.Value;
             cm.tokenNo = car.recript_no;
             cm.carNo = car.car_no;
 
-            if(!cm.isMonthly)
+            if (!cm.isMonthly)
                 cm.totalAmount = CalculateAmount(da, car, duration, car.parkin_time.Value);
             else
                 cm.totalAmount = 0;
@@ -180,56 +185,65 @@ namespace CP_v2.Controllers
             DataClass da = new DataClass();
             return Json(da.TotalParkedInCars(), JsonRequestBehavior.AllowGet);
         }
-        private static double CalculateAmount(DataClass da, parked_car car, DateTime duration,DateTime parkin_time)
+        private static double CalculateAmount(DataClass da, parked_car car, DateTime duration, DateTime parkin_time)
         {
             string[] rates = ConfigurationManager.AppSettings["MinutesRate"].Split(',');
-            double totlalAmount;
+            double totlalAmount = 0;
             DateTime at8am = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 08, 00, 00);
             DateTime at20pm = at8am.AddHours(12);
-            DateTime atnext8am = at20pm.AddHours(12);
-            bool isNightCalculateAmount = false;
-            if (car.is_nightly != null && car.is_nightly.Value)
-            {
-                if (at8am > parkin_time && DateTime.Now > at8am)
-                {
-                    isNightCalculateAmount = true;
-                    duration = new DateTime((DateTime.Now - at8am).Ticks);
-                }
-                if (at20pm.AddDays(-1) > parkin_time)
-                {
-                    isNightCalculateAmount = true;
-                    TimeSpan span = at20pm.AddDays(-1) - parkin_time;
-                    duration = duration.Add(span);
-                }
-
-            }
+            DateTime atnext8am = at20pm.AddHours(12); 
             var rateList = da.GetRateListByType(car.veh_type.Value);
             var DayRate = rateList.Where(x => x.duration_time.Equals("Day")).Select(x => x.amount_to_charge).FirstOrDefault();
             var hoursRate = rateList.Where(x => x.duration_time.Equals("Hour")).Select(x => x.amount_to_charge).FirstOrDefault();
             var nightRate = rateList.Where(x => x.duration_time.Equals("Night")).Select(x => x.amount_to_charge).FirstOrDefault();
-            int hours = duration.Hour;
+
             int minutesRate = 0;
+
+            if (car.is_nightly != null && car.is_nightly.Value)
+            {
+                DateTime timeDiff = new DateTime((DateTime.Now - parkin_time).Ticks);
+                 
+                DateTime at20pmAtParkin = new DateTime(parkin_time.Year, parkin_time.Month, parkin_time.Day, 20, 00, 00);
+                DateTime at8amParkin = at20pmAtParkin.AddHours(-12); 
+                duration = new DateTime();
+                if (parkin_time > at8amParkin && DateTime.Now < at20pmAtParkin)
+                {
+                    duration = timeDiff;
+                }
+                else
+                { 
+                    if (at20pmAtParkin > parkin_time && parkin_time > at8amParkin)
+                    {
+                        DateTime parkinTimeDiff = new DateTime((at20pmAtParkin - parkin_time).Ticks);
+                        duration = duration.Add(parkinTimeDiff.TimeOfDay);
+                       
+                    }
+                    if (DateTime.Now > at8am && DateTime.Now < at20pm)
+                    {
+                        DateTime parkOutTimeDiff = new DateTime((DateTime.Now - at8am).Ticks);
+                        duration = duration.Add(parkOutTimeDiff.TimeOfDay);
+                    
+                    }
+                    int days = timeDiff.Day;
+                    if (parkin_time < at8amParkin && DateTime.Now > at20pm)
+                        days++;
+                    
+                    totlalAmount += (days * nightRate) + ((days - 1) * (DayRate / 2)) ?? 0;
+                }
+
+            }
+            int hours = duration.Hour;
+
             for (int i = 0; i < rates.Length; i++)
             {
                 string[] rateArray = rates[i].Split(':');
                 if (duration.Minute >= int.Parse(rateArray[0].Split('-')[0]) && duration.Minute <= int.Parse(rateArray[0].Split('-')[1]))
                     minutesRate += int.Parse(rateArray[1]);
             }
-            totlalAmount = Math.Ceiling((hours * hoursRate.Value)) + minutesRate;
-            totlalAmount +=((duration.Day -1) * DayRate)?? 0 ;
-            if (car.is_nightly != null && car.is_nightly.Value)
-            {
-                if (isNightCalculateAmount)
-                    totlalAmount = totlalAmount + nightRate.Value;
-                else if(duration.Day == 1)
-                    totlalAmount = nightRate.Value;
-
-            }
-            else
-            {
-                if (hours == 0)
-                    totlalAmount =  hoursRate.Value;
-            }
+            totlalAmount += Math.Ceiling((hours * hoursRate.Value)) + minutesRate;
+            totlalAmount += ((duration.Day - 1) * DayRate) ?? 0;
+            if ((car.is_nightly == null || !car.is_nightly.Value) && hours == 0)
+                totlalAmount = hoursRate.Value;
             return totlalAmount;
         }
 
@@ -242,7 +256,7 @@ namespace CP_v2.Controllers
             car.parkout_time = DateTime.Now;
             DateTime durationTime = new DateTime((DateTime.Now - car.parkin_time.Value).Ticks);
             CheckoutModel cm = new CheckoutModel();
-            car.parked_duration = (durationTime.Day -1) + " Days " + durationTime.ToString("HH") + " Hours " + durationTime.ToString("mm") + " Minutes "; 
+            car.parked_duration = (durationTime.Day - 1) + " Days " + durationTime.ToString("HH") + " Hours " + durationTime.ToString("mm") + " Minutes ";
             car.out_by = da.GetUserByUserName(User.Identity.Name).id;
             car.checkoutimage = vehimage;
 
