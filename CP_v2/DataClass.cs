@@ -305,11 +305,17 @@ namespace CP_v2
         public bool CheckCarRegisterInCurrentMonth(string veh_no)
         {
             DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 05);
-            var car = _context.monthly_reg.Where(x => x.vehicle_no.ToLower().Equals(veh_no)).FirstOrDefault();
-            if (car == null)
+            var list = _context.monthly_reg.Where(x => x.vehicle_no.ToLower().Equals(veh_no.ToLower())).ToList();
+            if (list.Count == 0)
                 return false;
-            DateTime carMonth = new DateTime(DateTime.Now.Year, int.Parse(car.month_name), DateTime.Now.Day);
-            return int.Parse(car.month_name) == DateTime.Now.Month || carMonth.AddMonths(1) <= endDate;
+            foreach (var car in list)
+            {
+                DateTime carMonth = new DateTime(DateTime.Now.Year, int.Parse(car.month_name), DateTime.Now.Day);
+                if (int.Parse(car.month_name) == DateTime.Now.Month || carMonth.AddMonths(1) <= endDate)
+                    return true;
+            }
+            return false;
+         
         }
 
         public parked_car GetParkedCarById(Guid id)

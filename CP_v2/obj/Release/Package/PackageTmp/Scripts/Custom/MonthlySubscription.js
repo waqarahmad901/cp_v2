@@ -4,6 +4,8 @@
 angular.module('carApp', [])
   .controller('monthlySubscriptionController', function ($scope, $http) {
       $scope.currentEdit = "";
+      var date = new Date();
+      $scope.monthsearch = date.getMonth() + 1;
       $scope.getSubscriptions = function (page) {
           var data = {
               carno: $scope.carnosearch,
