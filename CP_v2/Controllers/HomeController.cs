@@ -242,7 +242,7 @@ namespace CP_v2.Controllers
             }
             totlalAmount += Math.Ceiling((hours * hoursRate.Value)) + minutesRate;
             totlalAmount += ((duration.Day - 1) * DayRate) ?? 0;
-            if ((car.is_nightly == null || !car.is_nightly.Value) && hours == 0)
+            if ((car.is_nightly == null || !car.is_nightly.Value) && hours == 0 && (duration.Day - 1) == 0)
                 totlalAmount = hoursRate.Value;
             return totlalAmount;
         }
@@ -252,7 +252,8 @@ namespace CP_v2.Controllers
         {
             DataClass da = new DataClass();
             parked_car car = da.GetParkedCarById(id);
-
+            if (car.out_by != null)
+                return Content("checkout");
             car.parkout_time = DateTime.Now;
             DateTime durationTime = new DateTime((DateTime.Now - car.parkin_time.Value).Ticks);
             CheckoutModel cm = new CheckoutModel();

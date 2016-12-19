@@ -30,7 +30,7 @@ namespace CP_v2.DB
         public string contact_no { get; set; }
         public string phone_no { get; set; }
         public string address { get; set; }
-        public Nullable<bool> is_block { get; set; }
+        public bool is_block { get; set; }
         public string terminal { get; set; }
         public string password { get; set; }
         public string role { get; set; }

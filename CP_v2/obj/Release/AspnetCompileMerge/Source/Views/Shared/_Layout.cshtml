@@ -73,8 +73,10 @@
         <div class="user">
             <div class="user-img"><img src="~/images/user-img.jpg" alt="" /></div>
             <div class="user-details">
-                <b>@User.Identity.Name</b>   <b><a style="color:white" href="@Url.Action("LogOff","Account")">Logout</a></b><br />
+                <b>@User.Identity.Name</b>   <b><a style="color:white" href="@Url.Action("LogOff","Account")">Logout</a></b>  <br />
                 Login Time: <span id="htime">02:50pm</span>
+               <br /><b><a style="color:white" href="@Url.Action("ChangePassword","Account")">Change Password</a></b>
+                <br/>
             </div>
         </div>
     </div>
@@ -95,6 +97,8 @@
                 <li><a href="@Url.Action("Index", "MonthlySubscription")">Monthly Subscription</a></li>
                 <li><a href="@Url.Action("Index", "UserReport")">Report</a></li>
                 <li><a href="@Url.Action("AllCars", "UserReport")">All Cars Report</a></li>
+                <li><a href="@Url.Action("ManageUsers", "Account")">User Management</a></li>
+                    
                 }
             </ul>
         </div>

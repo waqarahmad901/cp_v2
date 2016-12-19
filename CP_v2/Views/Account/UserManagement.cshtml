@@ -1,0 +1,162 @@
+﻿@model CP_v2.DB.ap_user 
+@{
+    ViewBag.Title = "UserManagement";
+}
+<style>
+    input[type=password], input[type=text],select,textarea  {
+        width:300px;
+        color: #2e2e2e;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        background-color: #fbfbfb;
+        margin-bottom: 0px;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 3px solid rgba(0,0,0,0);
+    }
+</style>
+<form method="post">
+    <div>
+        <br /><br />
+
+        @if (ViewBag.isUserExist == true)
+        { 
+        <div class="alert error" style="margin-bottom:20px;margin-top:-22px;">
+
+            <strong>ERROR!</strong> User name already exist please choose different.
+        </div>
+         }
+
+        @if (Model.id == Guid.Empty)
+        {
+            <div class="maindiv">
+                <div class="label">
+                    User Name:
+                </div>
+
+                <div style="float:left">
+                    <input type="text" name="username" required autocomplete="off" value="@Model.username" />
+                </div>
+            </div>
+
+            <div class="maindiv">
+                <div class="label">
+                    Password:
+                </div>
+
+                <div style="float:left">
+                    <input type="password" name="password" required autocomplete="off" value="@Model.password" />
+                </div>
+
+            </div>
+        }
+        else
+
+        {
+            <div class="maindiv">
+                <div class="label">
+                    User Name:
+                </div>
+
+                <div style="float:left">
+                    <input type="text" name="username" required autocomplete="off" value="@Model.username" disabled />
+                </div>
+            </div>
+
+            <div class="maindiv">
+                <div class="label">
+                    Password:
+                </div>
+
+                <div style="float:left">
+                    <input type="password" name="password" required autocomplete="off" value="@Model.password" disabled />
+                </div>
+
+            </div>
+            @Html.HiddenFor(x => x.username)
+            @Html.HiddenFor(x => x.password)
+
+        }
+
+        <div class="maindiv">
+            <div class="label">
+                First Name:
+            </div>
+
+            <div style="float:left">
+                <input type="text" value="@Model.first_name" name="first_name"  required/>
+            </div>
+        </div>
+        <div class="maindiv">
+            <div class="label">
+                Last Name:
+            </div>
+
+            <div style="float:left">
+                <input type="text" name="last_name" value="@Model.last_name"/>
+            </div>
+        </div>
+
+        <div class="maindiv">
+            <div class="label">
+                Cnic:
+            </div>
+
+            <div style="float:left">
+                <input type="text" name="cnic" value="@Model.cnic"/>
+            </div>
+        </div>
+        <div class="maindiv">
+            <div class="label">
+                Phone no:
+            </div>
+
+            <div style="float:left">
+                <input type="text" name="phone_no" value="@Model.phone_no" />
+            </div>
+        </div>
+
+        <div class="maindiv">
+            <div class="label">
+                Address:
+            </div>
+
+            <div style="float:left">
+                <textarea name="address" rows="5" cols="40" >@Model.address</textarea>
+            </div>
+            </div>
+        
+        <div class="maindiv">
+            <div class="label">
+                Role:
+            </div>
+
+            <div style="float:left">
+                @Html.DropDownListFor(s => s.RoleId, ViewBag.Roles as SelectList, new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="maindiv">
+            <div class="label">
+                Block:
+            </div>
+
+            <div style="float:left">
+               @Html.CheckBoxFor(x=>x.is_block)
+            </div>
+
+        </div>
+        <div class="maindiv">
+            <input type="submit" id="submit-button" style="width:10%" value="submit"/>
+        </div>
+    </div>
+    @Html.HiddenFor(x=>x.id)
+
+   
+
+</form>

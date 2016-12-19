@@ -93,14 +93,20 @@
 
                     <th>User</th>
                     <th>Total Parked In</th>
+                    <th>Total Parked In Monthly</th>
                     <th>Total Parked Out.</th>
+                    <th>Total Parked Out Monthly.</th>
+                    <th>Total Parked Out Nighlty.</th>
                     <th>Total Amount</th> 
                 </tr>
                 <tr ng-repeat="p in shift.shiftsTable">
 
                     <td>{{p.user}}</td> 
                     <td>{{p.totalParkedIn}}</td>
+                    <td>{{p.totalParkedInMonthly}}</td>
                     <td>{{p.totalParkedOut}}</td>
+                    <td>{{p.totalParkedOutMonthly}}</td>
+                    <td>{{p.totalParkedOutNightly}}</td>
                     <td>{{p.totalAmount}}</td> 
                 </tr>
 

@@ -10,6 +10,7 @@ namespace CP_v2.Models
         public int totalParkedInMonthly { get; set; }
 
         public int totalParkedOutMonthly { get; set; }
+        public int totalParkedOutNightly { get; set; }
 
         public double? totalAmount { get; set; }
         public string user { get; set;}

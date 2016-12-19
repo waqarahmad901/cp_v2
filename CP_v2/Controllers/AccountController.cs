@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using CP_v2.DB;
 using System.Web.Security;
 using System.Collections.Generic;
+using CP_v2.Models;
+using CP_v2.Util;
 
 namespace CP_v2.Controllers
 {
@@ -78,6 +80,98 @@ namespace CP_v2.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(FormCollection collection)
+        {
+          
+            string newpass = collection["new"];
+            DataClass da = new DataClass();
+            var user= da.GetUserByUserName(User.Identity.Name);
+            user.password = newpass;
+            da.Update();
+           
+            return RedirectToAction("passwordchanged");
+
+        }
+
+        public ActionResult passwordchanged()
+        {
+            return View();
+
+        }
+
+        public ActionResult UserManagement(Guid? id)
+        {
+            ap_user user = null;
+            DataClass da = new DataClass();
+            var roles = da.GetRoles();
+            ViewBag.Roles = new SelectList((from f in roles  select new { f.Id, f.Title }).ToList(), "Id", "Title");
+            if (id == null)
+                user = new ap_user();
+            else
+                user = da.GetUserById(id.Value);
+            return View(user);
+
+        }
+
+        [HttpPost]
+        public ActionResult UserManagement(ap_user user)
+        {
+            DataClass da = new DataClass();
+            if (user.id == Guid.Empty)
+            { 
+                var roles = da.GetRoles();
+                ViewBag.Roles = new SelectList((from f in roles select new { f.Id, f.Title }).ToList(), "Id", "Title"); 
+                var userexist = da.GetUserByUserName(user.username);
+                if (userexist != null)
+                {
+                    userexist.id = Guid.Empty;
+                    ViewBag.isUserExist = true;
+                    return View(userexist);
+                }
+                user.id = Guid.NewGuid(); 
+                da.AddUser(user);
+            }
+            else
+                da.UpdateUser(user);
+            return RedirectToAction("ManageUsers");
+
+        }
+        [AuthorizeUser(AccessLevel = "SuperAdmin")]
+        public ActionResult ManageUsers()
+       {
+            return View();
+        }
+      
+        public ActionResult GetManageUsers()
+        {
+            DataClass da = new DataClass();
+            List<UserModel> users = da.GetAllUsers().Select(x => new UserModel
+            {
+                Id = x.id,
+                cnic = x.cnic,
+                first_name = x.first_name,
+                last_name = x.last_name,
+                phone_no = x.phone_no,
+                role = x.ap_role == null ? "" : x.ap_role.Title,
+                UserName = x.username,
+                blocked = x.is_block
+            }).ToList();
+            return Json(users,JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult DeleteUser(Guid id)
+        {
+            DataClass da = new DataClass();
+            var user = da.GetUserById(id);
+            da.DeleteUser(user);
+            return Content("deleted");
         }
 
     }

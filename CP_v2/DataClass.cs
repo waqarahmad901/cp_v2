@@ -14,7 +14,7 @@ namespace CP_v2
         car_parkingEntities1 _context = new car_parkingEntities1();
         public ap_user VerifyUserLogin(string userName, string password)
         {
-            return _context.ap_user.Where(x => x.username == userName && x.password == password).FirstOrDefault();
+            return _context.ap_user.Where(x => x.username == userName && x.password == password && !x.is_block).FirstOrDefault();
 
         }
 
@@ -45,8 +45,10 @@ namespace CP_v2
                                    totalAmount = r.Sum(x => x.charged_amount),
                                    user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                    totalParkedIn = 0,
-                                   totalParkedOut = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                                   totalParkedInMonthly = 0,
+                                   totalParkedOut = r.Where(a => (!a.is_monthly.HasValue || a.is_monthly == (bool?)false) && (!a.is_nightly.HasValue || a.is_nightly == (bool?)false)).Count(),
                                    totalParkedOutMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
+                                   totalParkedOutNightly = r.Where(a => a.is_nightly.HasValue && a.is_nightly == (bool?)true).Count(),
                                }).ToList();
 
 
@@ -62,7 +64,9 @@ namespace CP_v2
                                     user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                     totalParkedIn = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
                                     totalParkedInMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
-                                    totalParkedOut = 0
+                                    totalParkedOutNightly = 0,
+                                    totalParkedOut = 0,
+                                    totalParkedOutMonthly = 0
                                 }).ToList();
 
                 model.shiftsTable.AddRange(finalIn.Union(finalOut));
@@ -70,7 +74,6 @@ namespace CP_v2
                 model.FromTime = shif1From.ToString("dd-MM-yyyy hh:mm:ss tt");
                 model.ToTime = shift1To.ToString("dd-MM-yyyy hh:mm:ss tt");
                 listModel.Add(model);
-
                 model = new DailyCashModel();
 
                 resultsIn = (from a in _context.parked_car
@@ -84,8 +87,10 @@ namespace CP_v2
                                totalAmount = r.Sum(x => x.charged_amount),
                                user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                totalParkedIn = 0,
-                               totalParkedOut = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
+                               totalParkedOut = r.Where(a => (!a.is_monthly.HasValue || a.is_monthly == (bool?)false) && (!a.is_nightly.HasValue || a.is_nightly == (bool?)false)).Count(),
+                               totalParkedInMonthly = 0,
                                totalParkedOutMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
+                               totalParkedOutNightly = r.Where(a => a.is_nightly.HasValue && a.is_nightly == (bool?)true).Count(),
                            }).ToList();
 
 
@@ -101,6 +106,8 @@ namespace CP_v2
                                 user = _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault() == null ? "" : _context.ap_user.Where(x => x.id == r.Key.Value).FirstOrDefault().username,
                                 totalParkedIn = r.Where(a => !a.is_monthly.HasValue || a.is_monthly == (bool?)false).Count(),
                                 totalParkedInMonthly = r.Where(a => a.is_monthly.HasValue && a.is_monthly == (bool?)true).Count(),
+                                totalParkedOutNightly =0,
+                                totalParkedOutMonthly = 0,
                                 totalParkedOut = 0
                             }).ToList();
 
@@ -117,6 +124,34 @@ namespace CP_v2
                 File.AppendAllText("C:/cp.txt", ex.Message + ex.StackTrace);
             }
             return null;
+        }
+
+        public void DeleteUser(ap_user user)
+        {
+            _context.ap_user.Remove(user);
+            _context.SaveChanges();
+        }
+
+        public ap_user GetUserById(Guid id)
+        {
+            return _context.ap_user.FirstOrDefault(x => x.id == id);
+        }
+
+        public void AddUser(ap_user user)
+        {
+           
+            _context.ap_user.Add(user);
+            _context.SaveChanges();
+        }
+        public void UpdateUser(ap_user user)
+        {
+            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public List<ap_role> GetRoles()
+        {
+            return _context.ap_role.ToList();
         }
 
         public int DeleteSubcriptionbyId(string id)
@@ -342,7 +377,7 @@ namespace CP_v2
         {
             long result = 0;
             bool token = long.TryParse(token_no, out result);
-            parked_car car = _context.parked_car.Where(x => x.recript_no == result || x.car_no.Contains(token_no)).OrderByDescending(x => x.date_created).FirstOrDefault();
+            parked_car car = _context.parked_car.Where(x => x.recript_no == result || x.car_no.Equals(token_no)).OrderByDescending(x => x.date_created).FirstOrDefault();
             return car;
 
         }
