@@ -295,9 +295,9 @@ namespace CP_v2
                         }
             );
 
+            pt.totalAmount = cars.Sum(x => x.Amount);
 
-
-            pt.Cars = cars.Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
+            pt.Cars = cars.OrderBy(x=>x.monthly).Skip(recordsPerPage * currentPage).Take(recordsPerPage).ToList();
             pt.Cars.ForEach(x => x.checkOutBy = allUsers.Where(y => y.id == x.out_by).FirstOrDefault() == null ? "" : allUsers.Where(y => y.id == x.out_by).FirstOrDefault().username);
             pt.TotalPages = recordsPerPage == 100 ? (cars.Count() / recordsPerPage) + 1 : 7;
             pt.CurrentPage = currentPage + 1;

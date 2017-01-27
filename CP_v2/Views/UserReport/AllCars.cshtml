@@ -12,20 +12,26 @@
             <td colspan="11" class="filter">
                 <b>Filter By</b>
                 <input type="number" ng-model="token_no" placeholder="Enter Token No" />
-                <input type="text" ng-model="veh_no" placeholder="Enter Vehicle No" /> 
+                <input type="text" ng-model="veh_no" placeholder="Enter Vehicle No" />
                 <select ng-model="parked">
                     <option value="all" selected>All</option>
                     <option value="parkedIn">Parked In</option>
                 </select>
 
-                <input type="text" ng-model="from" placeholder="From" class="datepicker" /> 
-                <input type="text" ng-model="to" placeholder="To" class="datepicker"/> 
+                <input type="text" ng-model="from" placeholder="From" class="datepicker" />
+                <input type="text" ng-model="to" placeholder="To" class="datepicker" />
                 <select ng-model="user" ng-options="user.id as user.name for user in users"></select>
                 <input type="submit" ng-click="pageClick(1)" value="Search" />
                 <input type="submit" value="Clear" ng-click="clearControls()" />
-                <input type="submit" value="Checkout" ng-click="CheckoutCars()" style="float:right"/>
+                <input type="submit" value="Checkout" ng-click="CheckoutCars()" style="float:right" />
             </td>
         </tr>
+            <tr>
+            <td colspan="11" class="filter">
+                Total Amount: <b>{{carTable.totalAmount}}</b>
+           </td>
+                </tr>
+
         <tr>
             <th>Sr</th>
             <th>Token</th>

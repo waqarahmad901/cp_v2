@@ -225,9 +225,11 @@ namespace CP_v2.Controllers
                     
                     }
                     int days = timeDiff.Day;
-                    if (parkin_time < at8amParkin && DateTime.Now > at20pm)
+                    if (parkin_time < at8amParkin && DateTime.Now > at20pm ) 
                         days++;
-                    
+                    if (parkin_time.TimeOfDay > DateTime.Now.TimeOfDay && (DateTime.Now > at20pm && parkin_time > at20pmAtParkin))
+                        days++;
+          
                     totlalAmount += (days * nightRate) + ((days - 1) * (DayRate / 2)) ?? 0;
                 }
 

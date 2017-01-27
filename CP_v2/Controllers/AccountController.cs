@@ -11,11 +11,25 @@ using CP_v2.Models;
 using CP_v2.Util;
 
 namespace CP_v2.Controllers
-{
+{ 
     public class AccountController : Controller
-    {
+    { 
         public ActionResult Login()
-        {
+        { 
+            //var LiceseKey = LicenseActivator.MyCustomHash("uifregkerglkjbriuewcsoincrecp"
+            //     + LicenseActivator.GetMacAddress())
+            //     + LicenseActivator.MyCustomHash(LicenseActivator.GetCpuId() + "ntntrnldfvoiudcjnvjrnvjrnkjv")
+            //     + LicenseActivator.MyCustomHash("vwBKdEYVJasdasdsadNs70bybA7SnvwBKdEYVJNs70bybA7SnvwBKdEYVasdasdJNs70bysadasdbA7SnvwBKdEYsadsadVJNs70bybA7SdasdsadnvwBKdEYVJNs70bybA7SsadasdsanvwBKdEYVJNs70bybA7Sn");
+            //string key = LicenseActivator.ReadRegeditKey();
+            //if (!LiceseKey.Equals(key))
+            //{ 
+            //    return RedirectToAction( "License");
+            //}
+
+            return View();
+        }
+        [AllowAnonymous]
+        public ActionResult License() {
             return View();
         }
 
